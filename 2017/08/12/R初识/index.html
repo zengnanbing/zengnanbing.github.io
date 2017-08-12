@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言如何才能成功地处理、分析和理解数据：  获取数据（从各种数据源将数据导入程序）； 整理数据（编码缺失值、修复或删除错误数据、将变量转换成更方便的格式）； 注释数据（以记住每段数据的含义）；   总结数据（通过描述性统计量了解数据的概况）； 数据可视化（一图胜千言）； 数据建模（解释数据间的关系，检验假设）； 整理结果（创建具有出版水平的表格和图形）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="R初识">
+<meta property="og:url" content="http://yoursite.com/2017/08/12/R初识/index.html">
+<meta property="og:site_name" content="Zeng&#39;s Blog">
+<meta property="og:description" content="前言如何才能成功地处理、分析和理解数据：  获取数据（从各种数据源将数据导入程序）； 整理数据（编码缺失值、修复或删除错误数据、将变量转换成更方便的格式）； 注释数据（以记住每段数据的含义）；   总结数据（通过描述性统计量了解数据的概况）； 数据可视化（一图胜千言）； 数据建模（解释数据间的关系，检验假设）； 整理结果（创建具有出版水平的表格和图形）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%861.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%862.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%863.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%865.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%867.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%868.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%869.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8610.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8611.png">
+<meta property="og:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8612.png">
+<meta property="og:updated_time" content="2017-08-12T16:06:09.292Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="R初识">
+<meta name="twitter:description" content="前言如何才能成功地处理、分析和理解数据：  获取数据（从各种数据源将数据导入程序）； 整理数据（编码缺失值、修复或删除错误数据、将变量转换成更方便的格式）； 注释数据（以记住每段数据的含义）；   总结数据（通过描述性统计量了解数据的概况）； 数据可视化（一图胜千言）； 数据建模（解释数据间的关系，检验假设）； 整理结果（创建具有出版水平的表格和图形）。">
+<meta name="twitter:image" content="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%861.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/12/R初识/"/>
+
+
+
+
+
+  <title>R初识 | Zeng's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zeng's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心之所向，素履以往</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/R初识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">R初识</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:59:25+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>如何才能成功地处理、分析和理解数据：</p>
+<ol>
+<li>获取数据（从各种数据源将数据导入程序）；</li>
+<li>整理数据（编码缺失值、修复或删除错误数据、将变量转换成更方便的格式）；</li>
+<li>注释数据（以记住每段数据的含义）；  </li>
+<li>总结数据（通过描述性统计量了解数据的概况）；</li>
+<li>数据可视化（一图胜千言）；</li>
+<li>数据建模（解释数据间的关系，检验假设）；</li>
+<li>整理结果（创建具有出版水平的表格和图形）。</li>
+</ol>
+<a id="more"></a>
+<h4 id="R简介"><a href="#R简介" class="headerlink" title="R简介"></a>R简介</h4><h5 id="什么是R？"><a href="#什么是R？" class="headerlink" title="什么是R？"></a>什么是R？</h5><p>要是一本书里没有图画和对话，那还有什么意思呢？</p>
+<p>​                                                                              ——爱丽丝《爱丽丝梦游仙境》</p>
+<p>R是一个非常灵活的平台，是专用于探索、展示和理解数据的语言，因此我引用了《爱丽丝梦游仙境》的句子来表示当今统计分析的潮流——一个探索、展示和理解的交互式过程。</p>
+<h5 id="R简史，前世今生"><a href="#R简史，前世今生" class="headerlink" title="R简史，前世今生"></a>R简史，前世今生</h5><p>R语言是从S统计绘图语言演变而来，可看作S的“方言”。</p>
+<p>S语言上世纪70年代诞生于贝尔实验室，是一种用来进行数据探索、统计分析和作图的解释型语言。</p>
+<p>1995年由新西兰Auckland大学，基于S语言的源代码，编写了一能执行S语言的软件，并将该软件的源代码全部公开，这就是R软件，其命令统称为R语言。</p>
+<h5 id="R的特点"><a href="#R的特点" class="headerlink" title="R的特点"></a>R的特点</h5><ul>
+<li><p>多领域的统计资源</p>
+<p>目前在R网站上约有5000多个程序包，涵盖了基础统计学、社会学、经济学、生物信息等诸多反面。</p>
+</li>
+<li><p>跨平台</p>
+<p>R可在多种操作系统下运行，如Windows、MacOS、Linux等。</p>
+</li>
+<li><p>命令行驱动</p>
+<p>R即时解释，输入命令，即可获得相应结果。</p>
+</li>
+</ul>
+<h5 id="为什么选择R？"><a href="#为什么选择R？" class="headerlink" title="为什么选择R？"></a>为什么选择R？</h5><ul>
+<li><p>丰富的资源</p>
+<p>涵盖了多种行业数据分析中几乎所有方法。</p>
+</li>
+<li><p>良好的扩展性</p>
+<p>十分方便的编写函数和程序包，跨平台，可以胜任复杂的数据分析、绘制精美的图形。</p>
+</li>
+<li><p>完备的帮助系统</p>
+<p>每个函数都有统一格式的帮助，运行实例。</p>
+</li>
+<li><p>GNU软件</p>
+<p>免费、软件本身及程序包的源代码公开</p>
+</li>
+</ul>
+<h5 id="程序包"><a href="#程序包" class="headerlink" title="程序包"></a>程序包</h5><p>R程序包是多个函数的集合，具有详细的说明和示例。</p>
+<p>Windows下的R包是经过编译的zip包。</p>
+<p>每个程序包包含函数、数据、帮助文件、描述文件等。</p>
+<p>R程序包是R功能扩展，特定的分析功能，需要用相应的程序包实现。</p>
+<p>例如：画图常用到ggplot2程序包，系统发育分析，常用到ape程序包。</p>
+<h4 id="R语言数据类型与数据结构"><a href="#R语言数据类型与数据结构" class="headerlink" title="R语言数据类型与数据结构"></a>R语言数据类型与数据结构</h4><h5 id="R语言数据类型"><a href="#R语言数据类型" class="headerlink" title="R语言数据类型"></a>R语言数据类型</h5><table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Numeric（数字）</td>
+<td>12.3，5，999</td>
+<td>v  &lt;- 23.5   print(class(v))    ：”numeric”</td>
+</tr>
+<tr>
+<td style="text-align:left">Integer（整型）</td>
+<td>2L，34L，0L</td>
+<td>v  &lt;- 2L   print(class(v))    ：”integer”</td>
+</tr>
+<tr>
+<td style="text-align:left">Complex（复合型）</td>
+<td>3  + 2i</td>
+<td>v  &lt;- 2+5i   print(class(v))    ：  “complex”</td>
+</tr>
+<tr>
+<td style="text-align:left">Character（字符）</td>
+<td>‘a’  , ‘“good”, “TRUE”, ‘23.4’</td>
+<td>v  &lt;- “TRUE”   print(class(v))  ：”character”</td>
+</tr>
+<tr>
+<td style="text-align:left">Raw（原型）</td>
+<td>“Hello”  被存储为  48  65 6c  6c 6f</td>
+<td>v  &lt;- charToRaw(“Hello”)   print(class(v  ：  “raw”</td>
+</tr>
+<tr>
+<td style="text-align:left">Logical（逻辑型）</td>
+<td>TRUE,  FALSE</td>
+<td>v  &lt;- TRUE   print(class(v))    ：  “logical”</td>
+</tr>
+</tbody>
+</table>
+<h5 id="R语言变量"><a href="#R语言变量" class="headerlink" title="R语言变量"></a>R语言变量</h5><p>变量为我们提供了我们的程序可以操作的命名存储。有效的变量名称由字母，数字和点或下划线字符组成。<br>变量名以字母或不以数字后跟的点开头。</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>合法性</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>var_name2.</td>
+<td>有效</td>
+<td>有字母、数字、点和下划线</td>
+</tr>
+<tr>
+<td>VAR_NAME%</td>
+<td>无效</td>
+<td>有字符<code>%</code></td>
+</tr>
+<tr>
+<td>2var_name</td>
+<td>无效</td>
+<td>数字开头</td>
+</tr>
+<tr>
+<td>.var_name,</td>
+<td>有效</td>
+<td>可以用<code>.</code>开头</td>
+</tr>
+<tr>
+<td>.2var_name</td>
+<td>无效</td>
+<td>用<code>.</code>开头，后面接数字</td>
+</tr>
+<tr>
+<td>_var_name</td>
+<td>无效</td>
+<td>以<code>_</code>开头</td>
+</tr>
+</tbody>
+</table>
+<h5 id="R语言特殊运算符"><a href="#R语言特殊运算符" class="headerlink" title="R语言特殊运算符"></a>R语言特殊运算符</h5><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>功能</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%%</td>
+<td>两个向量求余</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;-  c(8, 3, 4)   print(v%%t)  ：2.0  2.5  2.0</td>
+</tr>
+<tr>
+<td>％/％</td>
+<td>两个向量相除求商</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;-  c(8, 3, 4)   print(v%/%t)：0  1  1</td>
+</tr>
+<tr>
+<td>^</td>
+<td>将第二向量作为第一向量的指数</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;- c(8, 3, 4)   print(v^t)  ：256.000  166.375  1296.000</td>
+</tr>
+<tr>
+<td>:</td>
+<td>冒号运算符。  它为向量按顺序创建一系列数字。</td>
+<td>v  &lt;- 2:8   print(v)  :2  3  4 5 6 7 8</td>
+</tr>
+<tr>
+<td>%in%</td>
+<td>此运算符用于标识元素是否属于向量。</td>
+<td>TRUE  FALSE</td>
+</tr>
+</tbody>
+</table>
+<h5 id="R语言数据结构"><a href="#R语言数据结构" class="headerlink" title="R语言数据结构"></a>R语言数据结构</h5><ol>
+<li><p>向量</p>
+<p>向量是用于存储数值型、字符型或逻辑型数据的一维数组。执行组合功能的函数c()可用来创建向量。各类向量如下例所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a &lt;- c(1,2,3)</div><div class="line">b &lt;- c(&quot;one&quot;,&quot;two&quot;,&quot;three&quot;)</div><div class="line">c &lt;- c(TRUE,TRUE,FALSE)</div></pre></td></tr></table></figure>
+<p>通过在方括号中给定元素所处位置的数值，我们可以访问向量中的元素。例如，a[c(1,2)]用于访问向量a中的第1个和第2个元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a[c(1,2)]</div><div class="line">[1] 1 2</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>矩阵</p>
+<p>矩阵是一个二维数组，只是每个元素都拥有相同的模式（数值型、字符型或逻辑型）。可通过函数matrix创建矩阵。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%861.png" alt=""></p>
+</li>
+<li><p>数组</p>
+<p>数组（array）与矩阵类似，但是维度可以大于2。数组可通过array函数创建，形式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">myarray &lt;-array(vector, dimensions, dimnames)</div></pre></td></tr></table></figure>
+<p>其中vector包含了数组中的数据，dimensions是一个数值型向量，给出了各个维度下标的最大值，而dimnames是可选的、各维度名称标签的列表。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dim1 &lt;- c(&quot;A1&quot;,&quot;A2&quot;)</div><div class="line">dim2 &lt;- c(&quot;B1&quot;,&quot;B2&quot;,&quot;B3&quot;)</div><div class="line">dim3 &lt;- c(&quot;C1&quot;,&quot;C2&quot;,&quot;C3&quot;,&quot;C4&quot;)</div><div class="line">z &lt;- array(1:24, c(2,3,4),dimnames = list(dim1,dim2,dim3))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&gt; z</div><div class="line">, , C1</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1  1  3  5</div><div class="line">A2  2  4  6</div><div class="line"></div><div class="line">, , C2</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1  7  9 11</div><div class="line">A2  8 10 12</div><div class="line"></div><div class="line">, , C3</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1 13 15 17</div><div class="line">A2 14 16 18</div><div class="line"></div><div class="line">, , C4</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1 19 21 23</div><div class="line">A2 20 22 24</div></pre></td></tr></table></figure>
+<p>从数组中选取元素的方式与矩阵相同。上例中，元素z[1,2,3]为15。</p>
+</li>
+<li><p>数据框</p>
+<p>由于不同的列可以包含不同模式（数值型、字符型等）的数据，数据框的概念较矩阵来说更为一般。它与你通常在SAS、SPSS和Stata中看到的数据集类似。数据框将是你在R中最常处理的数据结构。</p>
+<p>数据框可通过函数data.frame()创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mydata &lt;-data.frame(col1, col2, col3,...)</div></pre></td></tr></table></figure>
+<p>其中的列向量col1, col2,col3,…可为任何类型（如字符型、数值型或逻辑型）。每一列的名称可由函数names指定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">patientID &lt;- c(1,2,3,4)</div><div class="line">age &lt;- c(25,34,28,52)</div><div class="line">diabetes &lt;- c(&quot;Type1&quot;,&quot;Type2&quot;,&quot;Type1&quot;,&quot;Type1&quot;)</div><div class="line">status &lt;- c(&quot;Poor&quot;,&quot;Improved&quot;,&quot;Excellent&quot;,&quot;Poor&quot;)</div><div class="line">patientdata &lt;- data.frame(patientID,age,diabetes,status)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; patientdata</div><div class="line">  patientID age diabetes    status</div><div class="line">1         1  25    Type1      Poor</div><div class="line">2         2  34    Type2  Improved</div><div class="line">3         3  28    Type1 Excellent</div><div class="line">4         4  52    Type1      Poor</div></pre></td></tr></table></figure>
+<ul>
+<li><p>attach()、detach()和with()</p>
+<p>函数attach()可将数据框添加到R的搜索路径中。R在遇到一个变量名以后，将检查搜索路径中的数据框，以定位到这个变量。</p>
+<p>函数detach()将数据框从搜索路径中移除。值得注意的是，detach()并不会对数据框本身做任何处理。</p>
+<p>函数with(),大括号{}之间的语句都针对指定数据框执行</p>
+</li>
+<li><p>实例标识符</p>
+<p>在病例数据中，病人编号（patientID）用于区分数据集中不同的个体。实例标识符（case identifier）可通过数据框操作函数中的rowname选项指定。</p>
+<p>例如，语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">patientdata &lt;- data.frame(patientID, age, diabetes,status,row.names = patientID)</div></pre></td></tr></table></figure>
+<p>将patientID指定为R中标记各类打印输出和图形中实例名称所用的变量。</p>
+</li>
+</ul>
+</li>
+<li><p>因子 </p>
+<p>变量可归结为名义型、有序型或连续型变量。名义型变量是没有顺序之分的类别变量。糖尿病类型Diabetes（Type1、Type2）是名义型变量的一例。有序型变量表示一种顺序关系，而非数量关系。病情Status（poor, improved, excellent）是顺序型变量的一个上佳示例。续型变量可以呈现为某个范围内的任意值，并同时表示了顺序和数量。</p>
+<p>类别（名义型）变量和有序类别（有序型）变量在R中称为因子（factor）。</p>
+<p>函数factor()以一个整数向量的形式存储类别值，整数的取值范围是[1… k ]（其中k 是名义型变量中唯一值的个数），同时一个由字符串（原始值）组成的内部向量将映射到这些整数上。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diabetes &lt;- c(&quot;Type1&quot;,&quot;Type2&quot;,&quot;Type1&quot;,&quot;Type1&quot;)</div></pre></td></tr></table></figure>
+<p>语句diabetes &lt;-factor(diabetes)将此向量存储为(1, 2, 1, 1)，并在内部将其关联为1=Type1和2=Type2（具体赋值根据字母顺序而定）。针对向量diabetes进行的任何分析都会将其作为名义型变量对待。</p>
+</li>
+<li><p>列表</p>
+<p>列表（list）是R的数据类型中最为复杂的一种。一般来说，列表就是一些对象（或成分，component）的有序集合。列表允许你整合若干（可能无关的）对象到单个对象名下。例如，某个列表中可能是若干向量、矩阵、数据框，甚至其他列表的组合。可以使用函数list()创建列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mylist &lt;-list(object1, object2, ...)</div></pre></td></tr></table></figure>
+<p>其中的对象可以是目前为止讲到的任何结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">g &lt;- &quot;My First List&quot;</div><div class="line">h &lt;- c(25,26,18,39)</div><div class="line">j &lt;- matrix(1:10,nrow = 5)</div><div class="line">k &lt;-c(&quot;noe&quot;,&quot;two&quot;,&quot;three&quot;)</div><div class="line">mylist &lt;- list(title = g, ages = h, j, k)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&gt; mylist</div><div class="line">$title</div><div class="line">[1] &quot;My First List&quot;</div><div class="line"></div><div class="line">$ages</div><div class="line">[1] 25 26 18 39</div><div class="line"></div><div class="line">[[3]]</div><div class="line">     [,1] [,2]</div><div class="line">[1,]    1    6</div><div class="line">[2,]    2    7</div><div class="line">[3,]    3    8</div><div class="line">[4,]    4    9</div><div class="line">[5,]    5   10</div><div class="line"></div><div class="line">[[4]]</div><div class="line">[1] &quot;noe&quot;   &quot;two&quot;   &quot;three&quot;</div></pre></td></tr></table></figure>
+<h5 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h5><ol>
+<li>对象名称中的句点（.）没有特殊意义。但美元符号<code>$</code>却有着和其他语言中的句点类似的含义，即指定一个对象中的某些部分。例如，<code>A$x</code>是指数据框A中的变量x。</li>
+<li>R不提供多行注释或块注释功能。</li>
+<li>将一个值赋给某个向量、矩阵、数组或列表中一个不存在的元素时，R将自动扩展这个数据结构以容纳新值。</li>
+<li>R中没有标量。标量以单元素向量的形式出现。</li>
+<li>R中的下标不从0开始，而从1开始。</li>
+<li>变量无法被声明。它们在首次被赋值时生成。</li>
+</ol>
+</li>
+</ol>
+<h4 id="数据的输入"><a href="#数据的输入" class="headerlink" title="数据的输入"></a>数据的输入</h4><p>R可从键盘、文本文件、Microsoft Excel和Access、流行的统计软件、特殊格式的文件，以及多种关系型数据库中导入数据。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%862.png" alt=""></p>
+<h4 id="初阶绘图"><a href="#初阶绘图" class="headerlink" title="初阶绘图"></a>初阶绘图</h4><p>通过执行如plot()、hist()（绘制直方图）或barplot()（创建条形图），可以很方便的绘制图形。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">H&lt;- c(7,12,28,3,41)</div><div class="line">barplot(H)</div></pre></td></tr></table></figure>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%863.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">n=50000;</div><div class="line">r=0.7;r_e=(1-r*r)^.5;</div><div class="line">X=rnorm(n);</div><div class="line">Y=Xr+r_ernorm(n);</div><div class="line">Y=ifelse(X&gt;0,Y,-Y);</div><div class="line">plot(X,Y,col=&quot;pink&quot;)</div></pre></td></tr></table></figure>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%865.png" alt=""></p>
+<h4 id="案例展示"><a href="#案例展示" class="headerlink" title="案例展示"></a>案例展示</h4><p>《红楼梦》文本分析以及关系网络的挖掘。</p>
+<p>在这里主要进行和挖掘了如下内容：</p>
+<ol>
+<li>《红楼梦》数据的准备、预处理、分词等</li>
+<li>《红楼梦》各个章节的字数、词数、段落等相关方面的关系</li>
+<li>《红楼梦》整体词频和词云的展示</li>
+<li>《红楼梦》各个章节的聚类分析并可视化，主要进行了根据IF-IDF的系统聚类和根据词频的LDA主题模型聚类</li>
+<li>《红楼梦》中关系网络的探索，主要探索了各个章节的关系图和人物关系网路图</li>
+</ol>
+<ul>
+<li>《红楼梦》数据的准备、预处理、分词等</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">##   [1] &quot;金荣&quot;       &quot;人多势众&quot;   &quot;贾瑞&quot;       &quot;勒令&quot;       &quot;秦钟&quot;      </div><div class="line">##   [6] &quot;宝玉&quot;       &quot;吵闹&quot;       &quot;金荣&quot;       &quot;回到&quot;       &quot;家中&quot;      </div><div class="line">##  [11] &quot;越想&quot;       &quot;越气&quot;       &quot;秦钟&quot;       &quot;贾蓉&quot;       &quot;小舅子&quot;    </div><div class="line">##  [16] &quot;贾家&quot;       &quot;子孙&quot;       &quot;附学&quot;       &quot;读书&quot;       &quot;因仗&quot;      </div><div class="line">##  [21] &quot;宝玉&quot;       &quot;目中无人&quot;   &quot;该行&quot;       &quot;正经事&quot;     &quot;素日&quot;      </div><div class="line">##  [26] &quot;宝玉&quot;       &quot;鬼鬼祟祟&quot;   &quot;瞎子&quot;       &quot;看不见&quot;     &quot;今日&quot;      </div><div class="line">##  [31] &quot;勾搭&quot;       &quot;眼睛&quot;       &quot;出事&quot;       &quot;母亲&quot;       &quot;胡氏&quot;      </div><div class="line">##  [36] &quot;听见&quot;       &quot;咕咕&quot;       &quot;嘟嘟&quot;       &quot;问道&quot;       &quot;闲气&quot;      </div><div class="line">##  [41] &quot;好容易&quot;     &quot;我望&quot;       &quot;姑妈&quot;       &quot;姑妈&quot;       &quot;千方百计&quot;  </div><div class="line">##  [46] &quot;西府里&quot;     &quot;琏二奶奶&quot;   &quot;跟前&quot;       &quot;念书&quot;       &quot;地方&quot;      </div><div class="line">##  [51] &quot;家里&quot;       &quot;力量&quot;       &quot;学里&quot;       &quot;现成&quot;       &quot;现成&quot;      </div><div class="line">##  [56] &quot;二年&quot;       &quot;念书&quot;       &quot;家里&quot;       &quot;嚼用&quot;       &quot;穿件&quot;      </div><div class="line">##  [61] &quot;鲜明&quot;       &quot;衣服&quot;       &quot;念书&quot;       &quot;认得&quot;       &quot;薛大爷&quot;    </div><div class="line">##  [66] &quot;薛大爷&quot;     &quot;一年&quot;       &quot;二年&quot;       &quot;七八十两&quot;   &quot;银子&quot;      </div><div class="line">##  [71] &quot;学房&quot;       &quot;再要&quot;       &quot;地方&quot;       &quot;告诉&quot;       &quot;比登&quot;      </div><div class="line">##  [76] &quot;难呢&quot;       &quot;一会&quot;       &quot;觉去&quot;       &quot;多着呢&quot;     &quot;金荣&quot;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>《红楼梦》各个章节的字数、词数、段落等相关方面的关系</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%867.png" alt=""></p>
+</li>
+<li><p>段落数、字数、词数三维散点图</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%868.png" alt=""></p>
+</li>
+<li><p>段落数、字数、词数矩阵散点图</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%869.png" alt=""></p>
+</li>
+<li><p>《红楼梦》整体词频展示</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8610.png" alt=""></p>
+</li>
+<li><p>《红楼梦》整体词云的展示</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8611.png" alt=""></p>
+</li>
+<li><p>《红楼梦》中关系网络的探索</p>
+</li>
+</ul>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8612.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/TCP-IP总结/" rel="next" title="TCP/IP总结">
+                <i class="fa fa-chevron-left"></i> TCP/IP总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/13/R实例/" rel="prev" title="R实例">
+                R实例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/logo.jpg"
+               alt="Zeng" />
+          <p class="site-author-name" itemprop="name">Zeng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R简介"><span class="nav-number">2.</span> <span class="nav-text">R简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是R？"><span class="nav-number">2.1.</span> <span class="nav-text">什么是R？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#R简史，前世今生"><span class="nav-number">2.2.</span> <span class="nav-text">R简史，前世今生</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#R的特点"><span class="nav-number">2.3.</span> <span class="nav-text">R的特点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么选择R？"><span class="nav-number">2.4.</span> <span class="nav-text">为什么选择R？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#程序包"><span class="nav-number">2.5.</span> <span class="nav-text">程序包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R语言数据类型与数据结构"><span class="nav-number">3.</span> <span class="nav-text">R语言数据类型与数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#R语言数据类型"><span class="nav-number">3.1.</span> <span class="nav-text">R语言数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#R语言变量"><span class="nav-number">3.2.</span> <span class="nav-text">R语言变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#R语言特殊运算符"><span class="nav-number">3.3.</span> <span class="nav-text">R语言特殊运算符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#R语言数据结构"><span class="nav-number">3.4.</span> <span class="nav-text">R语言数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#注意："><span class="nav-number">3.5.</span> <span class="nav-text">注意：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据的输入"><span class="nav-number">4.</span> <span class="nav-text">数据的输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初阶绘图"><span class="nav-number">5.</span> <span class="nav-text">初阶绘图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#案例展示"><span class="nav-number">6.</span> <span class="nav-text">案例展示</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

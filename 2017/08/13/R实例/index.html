@@ -94,17 +94,17 @@
 
 
 
-<meta name="description" content="计算机网络根据规模可以分为WAN(Wide Area Network,广域网)和LAN(Local Area Network,局域网)。 将有业务往来的计算机连在一起便组成了私有网络,将多个私有网络连接一起就成了为公众使用的互联网。 TCP/IP是通信协议的统称。">
+<meta name="description" content="基础导入 1234library(rJava)library(Rwordseg) library(RColorBrewer)library(wordcloud) 读入数据 1lecture&amp;lt;-read.csv(&amp;quot;E:/users/zeng/R/hongloumeng.txt&amp;quot;, stringsAsFactors=FALSE,header=FALSE) 优化词库 123i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TCP&#x2F;IP总结">
-<meta property="og:url" content="http://yoursite.com/2017/04/10/TCP-IP总结/index.html">
+<meta property="og:title" content="R实例">
+<meta property="og:url" content="http://yoursite.com/2017/08/13/R实例/index.html">
 <meta property="og:site_name" content="Zeng&#39;s Blog">
-<meta property="og:description" content="计算机网络根据规模可以分为WAN(Wide Area Network,广域网)和LAN(Local Area Network,局域网)。 将有业务往来的计算机连在一起便组成了私有网络,将多个私有网络连接一起就成了为公众使用的互联网。 TCP/IP是通信协议的统称。">
+<meta property="og:description" content="基础导入 1234library(rJava)library(Rwordseg) library(RColorBrewer)library(wordcloud) 读入数据 1lecture&amp;lt;-read.csv(&amp;quot;E:/users/zeng/R/hongloumeng.txt&amp;quot;, stringsAsFactors=FALSE,header=FALSE) 优化词库 123i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-12T15:51:30.580Z">
+<meta property="og:updated_time" content="2017-08-12T16:10:25.410Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TCP&#x2F;IP总结">
-<meta name="twitter:description" content="计算机网络根据规模可以分为WAN(Wide Area Network,广域网)和LAN(Local Area Network,局域网)。 将有业务往来的计算机连在一起便组成了私有网络,将多个私有网络连接一起就成了为公众使用的互联网。 TCP/IP是通信协议的统称。">
+<meta name="twitter:title" content="R实例">
+<meta name="twitter:description" content="基础导入 1234library(rJava)library(Rwordseg) library(RColorBrewer)library(wordcloud) 读入数据 1lecture&amp;lt;-read.csv(&amp;quot;E:/users/zeng/R/hongloumeng.txt&amp;quot;, stringsAsFactors=FALSE,header=FALSE) 优化词库 123i">
 
 
 
@@ -133,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/04/10/TCP-IP总结/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/13/R实例/"/>
 
 
 
 
 
-  <title>TCP/IP总结 | Zeng's Blog</title>
+  <title>R实例 | Zeng's Blog</title>
   
 
 
@@ -256,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/10/TCP-IP总结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/13/R实例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zeng">
@@ -273,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">TCP/IP总结</h1>
+          <h1 class="post-title" itemprop="name headline">R实例</h1>
         
 
         <div class="post-meta">
@@ -285,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T14:19:13+08:00">
-                2017-04-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-13T00:00:11+08:00">
+                2017-08-13
               </time>
             
 
@@ -308,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TCP-IP/" itemprop="url" rel="index">
-                    <span itemprop="name">TCP/IP</span>
+                  <a href="/categories/R/" itemprop="url" rel="index">
+                    <span itemprop="name">R</span>
                   </a>
                 </span>
 
@@ -345,15 +345,19 @@
       
 
       
-        <p>计算机网络根据规模可以分为WAN(Wide Area Network,广域网)和LAN(Local Area Network,局域网)。</p>
-<p>将有业务往来的计算机连在一起便组成了私有网络,将多个私有网络连接一起就成了为公众使用的互联网。</p>
-<p>TCP/IP是通信协议的统称。</p>
-<a id="more"></a>
-<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>协议就是计算机与计算机之间通过网络实现通信事先达成的一种“约定”。这种“约定”使那些由不同厂商的设备、不同的CPU以及不同的操作系统组成的计算机之间，只要遵循相同的协议就能够实现通信。计算机与网络设备要相互通信，双方就必须基于相同的方法。比如，如何探测到通信目标、由哪一边先发起通信、使用哪种语言进行通信、怎样结束通信等规则都需要事先确定。不同的硬件、操作系统之间的通信，所有的这一切都需要一种规则。而我们就把这种规则称为协议（protocol）。</p>
-<p><strong>分组交换</strong> 是将大数据分割为一个个叫做包（Packet）的较小单位进行传输的方法。这里所说的包，就如同我们平常在邮局里见到的邮包。分组交换就是将大数据分装为一个个这样的邮包交给对方。</p>
-<h3 id="什么是-TCP-IP"><a href="#什么是-TCP-IP" class="headerlink" title="什么是 TCP/IP?"></a>什么是 TCP/IP?</h3><p>TCP/IP 是一类协议系统，它是用于网络通信的一套协议集合。</p>
-<p>传统上来说 TCP/IP 被认为是一个四层协议。</p>
-
+        <a id="more"></a>
+<p>基础导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">library(rJava)</div><div class="line">library(Rwordseg) </div><div class="line">library(RColorBrewer)</div><div class="line">library(wordcloud)</div></pre></td></tr></table></figure>
+<p>读入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lecture&lt;-read.csv(&quot;E:/users/zeng/R/hongloumeng.txt&quot;, stringsAsFactors=FALSE,header=FALSE)</div></pre></td></tr></table></figure>
+<p>优化词库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇大全.scel&quot;,&quot;hongloumeng1&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦群成员名字词库.scel&quot;,&quot;hongloumeng2&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇.scel&quot;,&quot;hongloumeng3&quot;)</div></pre></td></tr></table></figure>
+<p>分词+统计词频</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">words=unlist(lapply(X=lecture, FUN=segmentCN))</div><div class="line">#unlist将list类型的数据，转化为vector</div><div class="line">#lapply()返回一个长度与X一致的列表，每个元素为FUN计算出的结果，且分别对应到X中的每个元素。</div><div class="line">word=lapply(X=words, FUN=strsplit, &quot; &quot;) </div><div class="line">v=table(unlist(word))</div><div class="line">#table统计数据的频数</div></pre></td></tr></table></figure>
+<p>完整代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">library(rJava)</div><div class="line">library(Rwordseg) </div><div class="line">library(RColorBrewer)</div><div class="line">library(wordcloud)</div><div class="line">#读入数据  </div><div class="line">lecture&lt;-read.csv(&quot;E:/users/zeng/R/hongloumeng.txt&quot;, stringsAsFactors=FALSE,header=FALSE)</div><div class="line">#文本预处理  </div><div class="line">res=lecture[]</div><div class="line">#分词+频数统计  </div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇大全.scel&quot;,&quot;hongloumeng1&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦群成员名字词库.scel&quot;,&quot;hongloumeng2&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇.scel&quot;,&quot;hongloumeng3&quot;)</div><div class="line">words=unlist(lapply(X=res, FUN=segmentCN))</div><div class="line"></div><div class="line">#unlist将list类型的数据，转化为vector</div><div class="line">#lapply()返回一个长度与X一致的列表，每个元素为FUN计算出的结果，且分别对应到X中的每个元素。</div><div class="line">word=lapply(X=words, FUN=strsplit, &quot; &quot;) </div><div class="line">v=table(unlist(word))</div><div class="line">#table统计数据的频数</div><div class="line"># 降序排序  </div><div class="line">v=rev(sort(v))</div><div class="line"></div><div class="line">d=data.frame(词汇=names(v), 词频=v)  #创建数据框</div><div class="line">#过滤掉1个字和词频小于200的记录  </div><div class="line">d=subset(d, nchar(as.character(d$词汇))&gt;1 &amp; d$词频&gt;=100)  </div><div class="line">  </div><div class="line">#输出结果</div><div class="line">write.csv(d, file=&quot;E:/users/zeng/hongloumongresult.csv&quot;, row.names=FALSE)   </div><div class="line"></div><div class="line">#画出标签云</div><div class="line">mydata&lt;-read.csv(&quot;E:/users/zeng/hongloumengresult.csv&quot;,head=TRUE)</div><div class="line">mycolors &lt;- brewer.pal(12,&quot;Paired&quot;)</div><div class="line">windowsFonts(myFont=windowsFont(&quot;锐字巅峰粗黑简1.0&quot;)) </div><div class="line">wordcloud(mydata$词汇,mydata$词频,random.order=FALSE,random.color=TRUE,colors=mycolors,family=&quot;myFont&quot;)</div></pre></td></tr></table></figure>
+<p>在黑板上写下50个数字：1至50.在接下来的49轮操作中，每次做如下动作：选取两个黑板上的数字a和b，擦去，在黑板上写|b – a|。请问最后一次动作之后剩下数字可能是什么？为什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">w=rep(0,7000)</div><div class="line">for(j in 1:7000)&#123;</div><div class="line">  t=c(1:50)</div><div class="line">  for(i in 1:49)&#123;</div><div class="line">    q=sample(t,2)</div><div class="line">    a=q[1];b=q[2];c=abs(a-b)</div><div class="line">    t=t[-which(t==a)]</div><div class="line">    len1=length(t)-50+i</div><div class="line">    if(len1&lt;0) t=c(t,rep(b,abs(len1)))</div><div class="line">    t=t[-which(t==b)]</div><div class="line">    len2=length(t)-49+i</div><div class="line">    if(len2&lt;0) t=c(t,rep(b,abs(len2)))</div><div class="line">    t[length(t)+1]=c</div><div class="line">    if(length(t)==1) w[j]=t</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">summary(w)</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -377,8 +381,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/22/SQLite-数据库存储/" rel="next" title="SQLite 数据库存储">
-                <i class="fa fa-chevron-left"></i> SQLite 数据库存储
+              <a href="/2017/08/12/R初识/" rel="next" title="R初识">
+                <i class="fa fa-chevron-left"></i> R初识
               </a>
             
           </div>
@@ -387,8 +391,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/12/R初识/" rel="prev" title="R初识">
-                R初识 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/13/HLS协议入门/" rel="prev" title="HLS协议入门">
+                HLS协议入门 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -441,17 +445,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/logo.jpg"
@@ -513,22 +508,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议"><span class="nav-number">1.</span> <span class="nav-text">协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-TCP-IP"><span class="nav-number">2.</span> <span class="nav-text">什么是 TCP/IP?</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
