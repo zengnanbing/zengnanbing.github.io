@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="SQLite," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="SQLite是一款轻量级的关系型数据库，运算速度快，占用资源少，通常只需几百KB的内存就够了。SQLite不仅支持标准的SQL语法，还遵循数据库的ACID事务。">
+<meta name="keywords" content="SQLite">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQLite 数据库存储">
+<meta property="og:url" content="http://yoursite.com/2017/03/22/SQLite-数据库存储/index.html">
+<meta property="og:site_name" content="Zeng&#39;s Blog">
+<meta property="og:description" content="SQLite是一款轻量级的关系型数据库，运算速度快，占用资源少，通常只需几百KB的内存就够了。SQLite不仅支持标准的SQL语法，还遵循数据库的ACID事务。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-12T14:01:24.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQLite 数据库存储">
+<meta name="twitter:description" content="SQLite是一款轻量级的关系型数据库，运算速度快，占用资源少，通常只需几百KB的内存就够了。SQLite不仅支持标准的SQL语法，还遵循数据库的ACID事务。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/22/SQLite-数据库存储/"/>
+
+
+
+
+
+  <title>SQLite 数据库存储 | Zeng's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zeng's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">心之所向，素履以往</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/22/SQLite-数据库存储/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQLite 数据库存储</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T16:19:31+08:00">
+                2017-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>SQLite是一款轻量级的关系型数据库，运算速度快，占用资源少，通常只需几百KB的内存就够了。SQLite不仅支持标准的SQL语法，还遵循数据库的ACID事务。</p>
+<a id="more"></a>
+<h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><p>Android为了让使用者更加方便地管理数据库，提供了一个SQLiteOpenHelper帮助类。使用的时候只需要继承这个类就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"> public class MyDatabaseHelper extends SQLiteOpenHelper &#123;</div><div class="line">    public static final String CREATE_BOOK=&quot;create table Book(&quot;</div><div class="line">            +&quot;id integer primary key autoincrement,&quot;</div><div class="line">            +&quot;author text,&quot;</div><div class="line">            +&quot;price real,&quot;</div><div class="line">            +&quot;pages integer,&quot;</div><div class="line">            +&quot;name text)&quot;;</div><div class="line">    public static final String CREATE_CATEGORY=&quot;create table Category(&quot;</div><div class="line">            +&quot;id integer primary key autoincrement,&quot;</div><div class="line">            +&quot;category_name text,&quot;</div><div class="line">            +&quot;category_code integer)&quot;;</div><div class="line">    private Context mContext;</div><div class="line">    public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) &#123;</div><div class="line">        super(context, name, factory, version);</div><div class="line">        mContext=context;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void onCreate(SQLiteDatabase db) &#123;</div><div class="line">        db.execSQL(CREATE_BOOK);</div><div class="line">        db.execSQL(CREATE_CATEGORY);</div><div class="line">        Toast.makeText(mContext,&quot;Create succeed&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>重写SQLiteOpenHelper中参数少的构造方法。这个构造方法中接受4个参数，第一个是Context。第二个参数是数据库名，创建数据库时使用的就是这里制定的名称。第三个参数允许我们在查询数据时返回一个自定义的Cusor，一般传入null。第四个参数表示当前数据库的版本号，可以对数据库进行升级操作。</p>
+<p>构建出SQLiteOpenHelper的实例后，再调用它的getReadableDatabase()方法或getWritableDatabase()方法就能创建数据库了，数据库文件存在<code>/data/data/&lt;package name&gt;/databases/</code>目录下。此时，重写的onCreate()方法也会得到执行，所以可以在这里去处理一些创建表的逻辑。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line">public class MainActivity extends AppCompatActivity implements View.OnClickListener &#123;</div><div class="line">    private Button createDatabase;</div><div class="line">    private Button addData;</div><div class="line">    private Button updateData;</div><div class="line">    private Button deleteData;</div><div class="line">    private Button queryData;</div><div class="line">    private MyDatabaseHelper dbHelper;</div><div class="line">    public SQLiteDatabase db;</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        dbHelper=new MyDatabaseHelper(this,&quot;BookStore.db&quot;,null,1);</div><div class="line">        db=dbHelper.getWritableDatabase();</div><div class="line">        createDatabase= (Button) findViewById(R.id.create_database);</div><div class="line">        addData=(Button)findViewById(R.id.add_data);</div><div class="line">        updateData=(Button)findViewById(R.id.update_data);</div><div class="line">        deleteData=(Button)findViewById(R.id.delete_data);</div><div class="line">        queryData=(Button)findViewById(R.id.query_data);</div><div class="line">        createDatabase.setOnClickListener(this);</div><div class="line">        addData.setOnClickListener(this);</div><div class="line">        updateData.setOnClickListener(this);</div><div class="line">        deleteData.setOnClickListener(this);</div><div class="line">        queryData.setOnClickListener(this);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onClick(View v) &#123;</div><div class="line">        switch (v.getId())&#123;</div><div class="line">            case R.id.create_database:</div><div class="line">                dbHelper.getWritableDatabase();</div><div class="line">                break;</div><div class="line">            case R.id.add_data:</div><div class="line">                ContentValues values=new ContentValues();</div><div class="line">//                开始组装第1条数据</div><div class="line">                values.put(&quot;name&quot;,&quot;The Da Vince Code&quot;);</div><div class="line">                values.put(&quot;author&quot;,&quot;Dan Brown&quot;);</div><div class="line">                values.put(&quot;pages&quot;,454);</div><div class="line">                values.put(&quot;price&quot;,16.96);</div><div class="line">                db.insert(&quot;Book&quot;,null,values);</div><div class="line">                values.clear();</div><div class="line">//                开始组装第2条数据</div><div class="line">                values.put(&quot;name&quot;,&quot;The Lost Symbol&quot;);</div><div class="line">                values.put(&quot;author&quot;,&quot;Dan Brown&quot;);</div><div class="line">                values.put(&quot;pages&quot;,510);</div><div class="line">                values.put(&quot;price&quot;,19.95);</div><div class="line">                db.insert(&quot;Book&quot;,null,values);</div><div class="line">                break;</div><div class="line">            case R.id.update_data:</div><div class="line">                ContentValues values1=new ContentValues();</div><div class="line">                values1.put(&quot;price&quot;,16);</div><div class="line">                db.update(&quot;Book&quot;,values1,&quot;name=?&quot;,new String[]&#123;&quot;The Da Vince Code&quot;&#125;);</div><div class="line">                break;</div><div class="line">            case R.id.delete_data:</div><div class="line">                db.delete(&quot;Book&quot;,&quot;pages&gt;?&quot;,new String[]&#123;&quot;500&quot;&#125;);</div><div class="line">                break;</div><div class="line">            case R.id.query_data:</div><div class="line">//                查询表中所以数据</div><div class="line">                Cursor cursor=db.query(&quot;Book&quot;,null,null,null,null,null,null);</div><div class="line">                if (cursor.moveToFirst()) &#123;</div><div class="line">                    do &#123;</div><div class="line">//                        遍历Cusor对象，取出数据并打印</div><div class="line">                        String name=cursor.getString(cursor.getColumnIndex(&quot;name&quot;));</div><div class="line">                        String author=cursor.getString(cursor.getColumnIndex(&quot;author&quot;));</div><div class="line">                        int pages=cursor.getInt(cursor.getColumnIndex(&quot;pages&quot;));</div><div class="line">                        double price=cursor.getDouble(cursor.getColumnIndex(&quot;price&quot;));</div><div class="line">                    &#125;while (cursor.moveToNext());</div><div class="line">                &#125;</div><div class="line">                cursor.close();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>SQlite数据类型简单，integer表示整型，real表示浮点数，text表示文本类型，blob表示二进制类型。</p>
+<p>primary key将对应列设为主键，autoincrement关键字表示是自增长的。</p>
+<h4 id="升级数据库"><a href="#升级数据库" class="headerlink" title="升级数据库"></a>升级数据库</h4><p>在onUpgrade()方法中执行两条DROP语句，如果发现数据库中已经存在Book或Category表就将这两张表删除，然后再调用onCreate()方法重新创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) &#123;</div><div class="line">        db.execSQL(&quot;drop table if exists Book&quot;);</div><div class="line">        db.execSQL(&quot;drop table if exists Category&quot;);</div><div class="line">        onCreate(db);</div></pre></td></tr></table></figure>
+<p>要让onUpgrade()方法执行，SQLiteOpenHelper的构造方法里的第四个参数表示数据库版本号，之前传入的是1，现在只要改个比1大的数就可以让onUpgrade()方法执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dbHelper=new MyDatabaseHelper(this,&quot;BookStore.db&quot;,null,2);</div></pre></td></tr></table></figure>
+<h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>insert()方法接受3个参数，第一个参数是表名。第二个参数用于再未指定添加数据的情况下给某些可为空的自动列赋值null，一般用不到这个功能，直接传入null即可。第三个参数是一个ContentValues对象，它提供了一系列的put()方法重载，用于向ContentValues中添加数据，只需将表中的每个列名以及相应的待添加数据传入即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">                SQLiteDatabase db=db=dbHelper.getWritableDatabase();</div><div class="line">                ContentValues values=new ContentValues();</div><div class="line">//                开始组装第1条数据</div><div class="line">                values.put(&quot;name&quot;,&quot;The Da Vince Code&quot;);</div><div class="line">                values.put(&quot;author&quot;,&quot;Dan Brown&quot;);</div><div class="line">                values.put(&quot;pages&quot;,454);</div><div class="line">                values.put(&quot;price&quot;,16.96);</div><div class="line">                db.insert(&quot;Book&quot;,null,values);</div><div class="line">                values.clear();</div><div class="line">//                开始组装第2条数据</div><div class="line">                values.put(&quot;name&quot;,&quot;The Lost Symbol&quot;);</div><div class="line">                values.put(&quot;author&quot;,&quot;Dan Brown&quot;); </div><div class="line">                values.put(&quot;pages&quot;,510);</div><div class="line">                values.put(&quot;price&quot;,19.95);</div><div class="line">                db.insert(&quot;Book&quot;,null,values);</div></pre></td></tr></table></figure>
+<h4 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h4><p>update()方法接受4个参数，第一个参数是表名，第二个参数是ContentValues对象，要把更新数据在这里组装进去。第三、四个参数用于约束更新某一行或某几行中的数据，不指定就默认更新所有行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ContentValues values1=new ContentValues();</div><div class="line">values1.put(&quot;price&quot;,16);</div><div class="line">db.update(&quot;Book&quot;,values1,&quot;name=?&quot;,new String[]&#123;&quot;The Da Vince Code&quot;&#125;);</div></pre></td></tr></table></figure>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p>delete()方法接受三个参数，第一个参数是表名，第二、三个参数用于约束删除某一行或几行的数据，不指定默认删除所有行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.delete(&quot;Book&quot;,&quot;pages&gt;?&quot;,new String[]&#123;&quot;500&quot;&#125;);</div></pre></td></tr></table></figure>
+<h4 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h4><p>query()方法参数非常复查，最短的一个重载方法也需要传入7个参数。第一个参数是表名；第二个参数用于指定查询哪几列，如果不指定默认查询所有列；第三、四个参数用于约束查询某一行或几行的数据，不指定则默认查询所有行的数据；第五个参数用于指定需要去group by的列，不指定则表示不对查询结果进行group by操作；第六个参数用于对group by之后的数据进行进一步的过滤，不指定则不进行过滤。第七个参数用于指定查询结果的排序方式，不指定则使用默认的排序方式。</p>
+<table>
+<thead>
+<tr>
+<th>query()方法参数</th>
+<th>对应SQL部分</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>table</td>
+<td>from table_name</td>
+<td>指定查询的表名</td>
+</tr>
+<tr>
+<td>columns</td>
+<td>select column1,column2</td>
+<td>指定查询的列明</td>
+</tr>
+<tr>
+<td>selection</td>
+<td>where column=value</td>
+<td>指定where的约束条件</td>
+</tr>
+<tr>
+<td>selectionsArgs</td>
+<td>-</td>
+<td>为where中的占位符提供具体的值</td>
+</tr>
+<tr>
+<td>groupBy</td>
+<td>group by column</td>
+<td>指定需要group by的列</td>
+</tr>
+<tr>
+<td>having</td>
+<td>having column=value</td>
+<td>对group by后的进一步约束</td>
+</tr>
+<tr>
+<td>orderBy</td>
+<td>order by column1,column2</td>
+<td>指定查询结果的排序方式</td>
+</tr>
+</tbody>
+</table>
+<p>调用query()方法会返回一个Cursor对象，查询到的所有数据都将从这个对象中取出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">   Cursor cursor=db.query(&quot;Book&quot;,null,null,null,null,null,null);</div><div class="line">                if (cursor.moveToFirst()) &#123;</div><div class="line">                    do &#123;</div><div class="line">//                        遍历Cusor对象，取出数据并打印</div><div class="line">                        String name=cursor.getString(cursor.getColumnIndex(&quot;name&quot;));</div><div class="line">                        String author=cursor.getString(cursor.getColumnIndex(&quot;author&quot;));</div><div class="line">                        int pages=cursor.getInt(cursor.getColumnIndex(&quot;pages&quot;));</div><div class="line">                        double price=cursor.getDouble(cursor.getColumnIndex(&quot;price&quot;));        </div><div class="line">                    &#125;while (cursor.moveToNext());</div><div class="line">                &#125;</div><div class="line">                cursor.close();</div></pre></td></tr></table></figure>
+<h4 id="使用SQL操作数据库"><a href="#使用SQL操作数据库" class="headerlink" title="使用SQL操作数据库"></a>使用SQL操作数据库</h4><p>虽然Android提供了非常方便的API用于操作数据库，不过总会有人更喜欢直接使用SQL来操作数据库。</p>
+<ul>
+<li>添加数据的方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db.execSQL(&quot;insert into Book(name,author,pages,price) values(?,?,?,?)&quot;,new String[]&#123;&quot;The Da Vinci Code&quot;,&quot;Dan Brown&quot;,&quot;454&quot;,&quot;16.96&quot;&#125;);</div><div class="line">db.execSQL(&quot;insert into Book(name,author,pages,price) values(?,?,?,?)&quot;,new String[]&#123;&quot;The Lost Symbol&quot;,&quot;Dan Brown&quot;,&quot;510&quot;,&quot;16.95&quot;&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>更新数据的方法如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.exexSQL(&quot;update Book set price = ? where name = ?&quot;,new String[]&#123;&quot;10.99&quot;,&quot;The Da Vinci Code&quot;&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>删除数据的方法如下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.execSQL(&quot;delete from Book where pages &gt; ?&quot;,new String[]&#123;&quot;500&quot;&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>查询数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db.rawQuery(&quot;select * from Book&quot;,null);</div></pre></td></tr></table></figure>
+<p>可以看到，除了查询数据的时候调用的是SQLiteDatabase的rawQuery()方法，其他操作都是调用execSQL()方法。</p>
+<h4 id="使用LitePal操作数据库"><a href="#使用LitePal操作数据库" class="headerlink" title="使用LitePal操作数据库"></a>使用LitePal操作数据库</h4><h5 id="LitePal简介"><a href="#LitePal简介" class="headerlink" title="LitePal简介"></a>LitePal简介</h5><p><a href="https://github.com/LitePalFramework/LitePal" target="_blank" rel="external">LitePal</a>是一款开源的Android数据库框架，采用对象关系映射(ORM)的模式，并将我们平时开发最常用到的一些数据库功能进行了封装，使得不用编写SQL语句就可以完成各种建表和增删改查得操作。</p>
+<h5 id="配置LitePal"><a href="#配置LitePal" class="headerlink" title="配置LitePal"></a>配置LitePal</h5><ul>
+<li>Edit your <strong>build.gradle</strong> file and add below dependency:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    compile &apos;org.litepal.android:core:1.5.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Configure litepal.xml</li>
+</ul>
+<p>在assets目录下新建一个<strong>litepal.xml</strong>文件。 编辑<strong>litepal.xml</strong>文件中得内容，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;litepal&gt;</div><div class="line">    &lt;!--</div><div class="line">    	Define the database name of your application. </div><div class="line">    	By default each database name should be end with .db. </div><div class="line">    	If you didn&apos;t name your database end with .db, </div><div class="line">    	LitePal would plus the suffix automatically for you.</div><div class="line">    	For example:    </div><div class="line">    	&lt;dbname value=&quot;demo&quot; /&gt;</div><div class="line">    --&gt;</div><div class="line">    &lt;dbname value=&quot;demo&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!--</div><div class="line">    	Define the version of your database. Each time you want </div><div class="line">    	to upgrade your database, the version tag would helps.</div><div class="line">    	Modify the models you defined in the mapping tag, and just </div><div class="line">    	make the version value plus one, the upgrade of database</div><div class="line">    	will be processed automatically without concern.</div><div class="line">			For example:    </div><div class="line">    	&lt;version value=&quot;1&quot; /&gt;</div><div class="line">    --&gt;</div><div class="line">    &lt;version value=&quot;1&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;!--</div><div class="line">    	Define your models in the list with mapping tag, LitePal will</div><div class="line">    	create tables for each mapping class. The supported fields</div><div class="line">    	defined in models will be mapped into columns.</div><div class="line">    	For example:    </div><div class="line">    	&lt;list&gt;</div><div class="line">    		&lt;mapping class=&quot;com.test.model.Reader&quot; /&gt;</div><div class="line">    		&lt;mapping class=&quot;com.test.model.Magazine&quot; /&gt;</div><div class="line">    	&lt;/list&gt;</div><div class="line">    --&gt;</div><div class="line">    &lt;list&gt;</div><div class="line">    &lt;/list&gt;</div><div class="line">    </div><div class="line">    &lt;!--</div><div class="line">        Define where the .db file should be. &quot;internal&quot; means the .db file</div><div class="line">        will be stored in the database folder of internal storage which no</div><div class="line">        one can access. &quot;external&quot; means the .db file will be stored in the</div><div class="line">        path to the directory on the primary external storage device where</div><div class="line">        the application can place persistent files it owns which everyone</div><div class="line">        can access. &quot;internal&quot; will act as default.</div><div class="line">        For example:</div><div class="line">        &lt;storage value=&quot;external&quot; /&gt;</div><div class="line">    --&gt;</div><div class="line">    </div><div class="line">&lt;/litepal&gt;</div></pre></td></tr></table></figure>
+<p>其中，<code>&lt;dbname&gt;</code>标签用于指定数据库名；<code>&lt;version&gt;</code>标签用于指定数据库版本号，每次更新数据库只需要增加version值；<code>&lt;list&gt;</code>标签用于指定所有得映射模型。</p>
+<ul>
+<li>Configure LitePalApplication</li>
+</ul>
+<p>You don’t want to pass the Context param all the time. To makes the APIs simple, just configure the LitePalApplication in <strong>AndroidManifest.xml</strong> as below:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;manifest&gt;</div><div class="line">    &lt;application</div><div class="line">        android:name=&quot;org.litepal.LitePalApplication&quot;</div><div class="line">        ...</div><div class="line">    &gt;</div><div class="line">        ...</div><div class="line">    &lt;/application&gt;</div><div class="line">&lt;/manifest&gt;</div></pre></td></tr></table></figure>
+<p>Of course you may have your own Application and has already configured here, like:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;manifest&gt;</div><div class="line">    &lt;application</div><div class="line">        android:name=&quot;com.example.MyOwnApplication&quot;</div><div class="line">        ...</div><div class="line">    &gt;</div><div class="line">        ...</div><div class="line">    &lt;/application&gt;</div><div class="line">&lt;/manifest&gt;</div></pre></td></tr></table></figure>
+<p>That’s OK. LitePal can still live with that. Just call <strong>LitePal.initialize(context)</strong> in your own Application:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public class MyOwnApplication extends AnotherApplication &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void onCreate() &#123;</div><div class="line">        super.onCreate();</div><div class="line">        LitePal.initialize(this);</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Make sure to call this method as early as you can. In the <strong>onCreate()</strong> method of Application will be fine. And always remember to use the application context as parameter. Do not use any instance of activity or service as parameter, or memory leaks might happen.</p>
+<h5 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h5><p>After setup, you can experience the powerful function now.</p>
+<h5 id="Create-tables"><a href="#Create-tables" class="headerlink" title="Create tables"></a>Create tables</h5><p>Define the models first. For example you have two models, <strong>Album</strong> and <strong>Song</strong>. The models can be defined as below:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class Album extends DataSupport &#123;</div><div class="line">	</div><div class="line">    @Column(unique = true, defaultValue = &quot;unknown&quot;)</div><div class="line">    private String name;</div><div class="line">	</div><div class="line">    private float price;</div><div class="line">	</div><div class="line">    private byte[] cover;</div><div class="line">	</div><div class="line">    private List&lt;Song&gt; songs = new ArrayList&lt;Song&gt;();</div><div class="line"></div><div class="line">    // generated getters and setters.</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public class Song extends DataSupport &#123;</div><div class="line">	</div><div class="line">    @Column(nullable = false)</div><div class="line">    private String name;</div><div class="line">	</div><div class="line">    private int duration;</div><div class="line">	</div><div class="line">    @Column(ignore = true)</div><div class="line">    private String uselessField;</div><div class="line">	</div><div class="line">    private Album album;</div><div class="line"></div><div class="line">    // generated getters and setters.</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Then add these models into the mapping list in <strong>litepal.xml</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;list&gt;</div><div class="line">    &lt;mapping class=&quot;org.litepal.litepalsample.model.Album&quot; /&gt;</div><div class="line">    &lt;mapping class=&quot;org.litepal.litepalsample.model.Song&quot; /&gt;</div><div class="line">&lt;/list&gt;</div></pre></td></tr></table></figure>
+<p>OK! The tables will be generated next time you operate database. For example, gets the <strong>SQLiteDatabase</strong> with following codes:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQLiteDatabase db = LitePal.getDatabase();</div></pre></td></tr></table></figure>
+<p>Now the tables will be generated automatically with SQLs like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE album (</div><div class="line">	id integer primary key autoincrement,</div><div class="line">	name text unique default &apos;unknown&apos;,</div><div class="line">	price real,</div><div class="line">	cover blob</div><div class="line">);</div><div class="line"></div><div class="line">CREATE TABLE song (</div><div class="line">	id integer primary key autoincrement,</div><div class="line">	name text not null,</div><div class="line">	duration integer,</div><div class="line">	album_id integer</div><div class="line">);</div></pre></td></tr></table></figure>
+<h5 id="Upgrade-tables"><a href="#Upgrade-tables" class="headerlink" title="Upgrade tables"></a>Upgrade tables</h5><p>Upgrade tables in LitePal is extremely easy. Just modify your models anyway you want:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class Album extends DataSupport &#123;</div><div class="line">	</div><div class="line">    @Column(unique = true, defaultValue = &quot;unknown&quot;)</div><div class="line">    private String name;</div><div class="line">	</div><div class="line">    @Column(ignore = true)</div><div class="line">    private float price;</div><div class="line">	</div><div class="line">    private byte[] cover;</div><div class="line">	</div><div class="line">    private Date releaseDate;</div><div class="line">	</div><div class="line">    private List&lt;Song&gt; songs = new ArrayList&lt;Song&gt;();</div><div class="line"></div><div class="line">    // generated getters and setters.</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>A <strong>releaseDate</strong> field was added and <strong>price</strong> field was annotated to ignore. Then increase the version number in <strong>litepal.xml</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;!--</div><div class="line">    Define the version of your database. Each time you want </div><div class="line">    to upgrade your database, the version tag would helps.</div><div class="line">    Modify the models you defined in the mapping tag, and just </div><div class="line">    make the version value plus one, the upgrade of database</div><div class="line">    will be processed automatically without concern.</div><div class="line">    For example:    </div><div class="line">    &lt;version value=&quot;1&quot; &gt;&lt;/version&gt;</div><div class="line">--&gt;</div><div class="line">&lt;version value=&quot;2&quot; &gt;&lt;/version&gt;</div></pre></td></tr></table></figure>
+<p>The tables will be upgraded next time you operate database. A <strong>releasedate</strong> column will be added into <strong>album</strong> table and the original <strong>price</strong> column will be removed. All the data in <strong>album</strong> table except those removed columns will be retained.</p>
+<p>But there are some upgrading conditions that LitePal can’t handle and all data in the upgrading table will be cleaned:</p>
+<ul>
+<li>Add a field which annotated as <code>unique = true</code>.</li>
+<li>Change a field’s annotation into <code>unique = true</code>.</li>
+<li>Change a field’s annotation into <code>nullable = false</code>.</li>
+</ul>
+<p>Be careful of the above conditions which will cause losing data.</p>
+<h5 id="Save-data"><a href="#Save-data" class="headerlink" title="Save data"></a>Save data</h5><p>The saving API is quite object oriented. Each model which inherits from <strong>DataSupport</strong> would have the <strong>save()</strong> method for free:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Album album = new Album();</div><div class="line">album.setName(&quot;album&quot;);</div><div class="line">album.setPrice(10.99f);</div><div class="line">album.setCover(getCoverImageBytes());</div><div class="line">album.save();</div><div class="line">Song song1 = new Song();</div><div class="line">song1.setName(&quot;song1&quot;);</div><div class="line">song1.setDuration(320);</div><div class="line">song1.setAlbum(album);</div><div class="line">song1.save();</div><div class="line">Song song2 = new Song();</div><div class="line">song2.setName(&quot;song2&quot;);</div><div class="line">song2.setDuration(356);</div><div class="line">song2.setAlbum(album);</div><div class="line">song2.save();</div></pre></td></tr></table></figure>
+<p>This will insert album, song1 and song2 into database with associations.</p>
+<h5 id="Update-data"><a href="#Update-data" class="headerlink" title="Update data"></a>Update data</h5><p>The simplest way, use <strong>save()</strong> method to update a record found by <strong>find()</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Album albumToUpdate = DataSupport.find(Album.class, 1);</div><div class="line">albumToUpdate.setPrice(20.99f); // raise the price</div><div class="line">albumToUpdate.save();</div></pre></td></tr></table></figure>
+<p>Each model which inherits from <strong>DataSupport</strong> would also have <strong>update()</strong> and <strong>updateAll()</strong> method. You can update a single record with a specified id:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Album albumToUpdate = new Album();</div><div class="line">albumToUpdate.setPrice(20.99f); // raise the price</div><div class="line">albumToUpdate.update(id);</div></pre></td></tr></table></figure>
+<p>Or you can update multiple records with a where condition:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Album albumToUpdate = new Album();</div><div class="line">albumToUpdate.setPrice(20.99f); // raise the price</div><div class="line">albumToUpdate.updateAll(&quot;name = ?&quot;, &quot;album&quot;);</div></pre></td></tr></table></figure>
+<h5 id="Delete-data"><a href="#Delete-data" class="headerlink" title="Delete data"></a>Delete data</h5><p>You can delete a single record using the static <strong>delete()</strong> method in <strong>DataSupport</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DataSupport.delete(Song.class, id);</div></pre></td></tr></table></figure>
+<p>Or delete multiple records using the static <strong>deleteAll()</strong> method in <strong>DataSupport</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DataSupport.deleteAll(Song.class, &quot;duration &gt; ?&quot; , &quot;350&quot;);</div></pre></td></tr></table></figure>
+<h5 id="Query-data"><a href="#Query-data" class="headerlink" title="Query data"></a>Query data</h5><p>Find a single record from song table with specified id:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Song song = DataSupport.find(Song.class, id);</div></pre></td></tr></table></figure>
+<p>Find all records from song table:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;Song&gt; allSongs = DataSupport.findAll(Song.class);</div></pre></td></tr></table></figure>
+<p>Constructing complex query with fluent query:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;Song&gt; songs = DataSupport.where(&quot;name like ?&quot;, &quot;song%&quot;).order(&quot;duration&quot;).find(Song.class);</div></pre></td></tr></table></figure>
+<h5 id="Async-operations"><a href="#Async-operations" class="headerlink" title="Async operations"></a>Async operations</h5><p>Every database operation is on main thread by default. If your operation might spent a long time, for example saving or querying tons of records. You may want to use async operations.</p>
+<p>LitePal support async operations on all crud methods. If you want to find all records from song table on a background thread, use codes like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">DataSupport.findAllAsync(Song.class).listen(new FindMultiCallback() &#123;</div><div class="line">    @Override</div><div class="line">    public &lt;T&gt; void onFinish(List&lt;T&gt; t) &#123;</div><div class="line">        List&lt;Song&gt; allSongs = (List&lt;Song&gt;) t;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Just use <strong>findAllAsync()</strong> instead of <strong>findAll()</strong>, and append a <strong>listen()</strong> method, the finding result will be callback to <strong>onFinish()</strong> method once it finished.</p>
+<p>Abd saving asynchronously is quite the same:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Album album = new Album();</div><div class="line">album.setName(&quot;album&quot;);</div><div class="line">album.setPrice(10.99f);</div><div class="line">album.setCover(getCoverImageBytes());</div><div class="line">album.saveAsync().listen(new SaveCallback() &#123;</div><div class="line">    @Override</div><div class="line">    public void onFinish(boolean success) &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>Just use <strong>saveAsync()</strong> instead of <strong>save()</strong>. It will save Album into database on a background, and the saving result will be callback to <strong>onFinish()</strong> method.</p>
+<h5 id="Multiple-databases"><a href="#Multiple-databases" class="headerlink" title="Multiple databases"></a>Multiple databases</h5><p>If your app needs multiple databases, LitePal support it completely. You can create as many databases as you want at runtime. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">LitePalDB litePalDB = new LitePalDB(&quot;demo2&quot;, 1);</div><div class="line">litePalDB.addClassName(Singer.class.getName());</div><div class="line">litePalDB.addClassName(Album.class.getName());</div><div class="line">litePalDB.addClassName(Song.class.getName());</div><div class="line">LitePal.use(litePalDB);</div></pre></td></tr></table></figure>
+<p>This will create a <strong>demo2</strong> database with <strong>singer</strong>, <strong>album</strong> and <strong>song</strong> tables.</p>
+<p>If you just want to create a new database but with same configuration as <strong>litepal.xml</strong>, you can do it with:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">LitePalDB litePalDB = LitePalDB.fromDefault(&quot;newdb&quot;);</div><div class="line">LitePal.use(litePalDB);</div></pre></td></tr></table></figure>
+<p>You can always switch back to default database with:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LitePal.useDefault();</div></pre></td></tr></table></figure>
+<p>And you can delete any database by specified database name:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LitePal.deleteDatabase(&quot;newdb&quot;);</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SQLite/" rel="tag"># SQLite</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/21/认识与入门MarkDown/" rel="next" title="认识与入门MarkDown">
+                <i class="fa fa-chevron-left"></i> 认识与入门MarkDown
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/10/TCP-IP总结/" rel="prev" title="TCP/IP总结">
+                TCP/IP总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/logo.jpg"
+               alt="Zeng" />
+          <p class="site-author-name" itemprop="name">Zeng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数据库"><span class="nav-number">1.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#升级数据库"><span class="nav-number">2.</span> <span class="nav-text">升级数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加数据"><span class="nav-number">3.</span> <span class="nav-text">添加数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新数据"><span class="nav-number">4.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">5.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询数据"><span class="nav-number">6.</span> <span class="nav-text">查询数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用SQL操作数据库"><span class="nav-number">7.</span> <span class="nav-text">使用SQL操作数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用LitePal操作数据库"><span class="nav-number">8.</span> <span class="nav-text">使用LitePal操作数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#LitePal简介"><span class="nav-number">8.1.</span> <span class="nav-text">LitePal简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置LitePal"><span class="nav-number">8.2.</span> <span class="nav-text">配置LitePal</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Get-Started"><span class="nav-number">8.3.</span> <span class="nav-text">Get Started</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Create-tables"><span class="nav-number">8.4.</span> <span class="nav-text">Create tables</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Upgrade-tables"><span class="nav-number">8.5.</span> <span class="nav-text">Upgrade tables</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Save-data"><span class="nav-number">8.6.</span> <span class="nav-text">Save data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Update-data"><span class="nav-number">8.7.</span> <span class="nav-text">Update data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Delete-data"><span class="nav-number">8.8.</span> <span class="nav-text">Delete data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Query-data"><span class="nav-number">8.9.</span> <span class="nav-text">Query data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Async-operations"><span class="nav-number">8.10.</span> <span class="nav-text">Async operations</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Multiple-databases"><span class="nav-number">8.11.</span> <span class="nav-text">Multiple databases</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zeng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

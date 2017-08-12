@@ -254,7 +254,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/R实例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zeng">
@@ -273,7 +273,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/12/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2017/08/12/R实例/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -285,7 +285,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T21:31:08+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:19:47+08:00">
                 2017-08-12
               </time>
             
@@ -324,10 +324,875 @@
 
       
         
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+          
+            <p>基础导入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">library(rJava)</div><div class="line">library(Rwordseg) </div><div class="line">library(RColorBrewer)</div><div class="line">library(wordcloud)</div></pre></td></tr></table></figure>
+<p>读入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lecture&lt;-read.csv(&quot;E:/users/zeng/R/hongloumeng.txt&quot;, stringsAsFactors=FALSE,header=FALSE)</div></pre></td></tr></table></figure>
+<p>优化词库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇大全.scel&quot;,&quot;hongloumeng1&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦群成员名字词库.scel&quot;,&quot;hongloumeng2&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇.scel&quot;,&quot;hongloumeng3&quot;)</div></pre></td></tr></table></figure>
+<p>分词+统计词频</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">words=unlist(lapply(X=lecture, FUN=segmentCN))</div><div class="line">#unlist将list类型的数据，转化为vector</div><div class="line">#lapply()返回一个长度与X一致的列表，每个元素为FUN计算出的结果，且分别对应到X中的每个元素。</div><div class="line">word=lapply(X=words, FUN=strsplit, &quot; &quot;) </div><div class="line">v=table(unlist(word))</div><div class="line">#table统计数据的频数</div></pre></td></tr></table></figure>
+<p>完整代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">library(rJava)</div><div class="line">library(Rwordseg) </div><div class="line">library(RColorBrewer)</div><div class="line">library(wordcloud)</div><div class="line">#读入数据  </div><div class="line">lecture&lt;-read.csv(&quot;E:/users/zeng/R/hongloumeng.txt&quot;, stringsAsFactors=FALSE,header=FALSE)</div><div class="line">#文本预处理  </div><div class="line">res=lecture[]</div><div class="line">#分词+频数统计  </div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇大全.scel&quot;,&quot;hongloumeng1&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦群成员名字词库.scel&quot;,&quot;hongloumeng2&quot;)</div><div class="line">installDict(&quot;E:\\users\\zeng\\ciku\\红楼梦词汇.scel&quot;,&quot;hongloumeng3&quot;)</div><div class="line">words=unlist(lapply(X=res, FUN=segmentCN))</div><div class="line"></div><div class="line">#unlist将list类型的数据，转化为vector</div><div class="line">#lapply()返回一个长度与X一致的列表，每个元素为FUN计算出的结果，且分别对应到X中的每个元素。</div><div class="line">word=lapply(X=words, FUN=strsplit, &quot; &quot;) </div><div class="line">v=table(unlist(word))</div><div class="line">#table统计数据的频数</div><div class="line"># 降序排序  </div><div class="line">v=rev(sort(v))</div><div class="line"></div><div class="line">d=data.frame(词汇=names(v), 词频=v)  #创建数据框</div><div class="line">#过滤掉1个字和词频小于200的记录  </div><div class="line">d=subset(d, nchar(as.character(d$词汇))&gt;1 &amp; d$词频&gt;=100)  </div><div class="line">  </div><div class="line">#输出结果</div><div class="line">write.csv(d, file=&quot;E:/users/zeng/hongloumongresult.csv&quot;, row.names=FALSE)   </div><div class="line"></div><div class="line">#画出标签云</div><div class="line">mydata&lt;-read.csv(&quot;E:/users/zeng/hongloumengresult.csv&quot;,head=TRUE)</div><div class="line">mycolors &lt;- brewer.pal(12,&quot;Paired&quot;)</div><div class="line">windowsFonts(myFont=windowsFont(&quot;锐字巅峰粗黑简1.0&quot;)) </div><div class="line">wordcloud(mydata$词汇,mydata$词频,random.order=FALSE,random.color=TRUE,colors=mycolors,family=&quot;myFont&quot;)</div></pre></td></tr></table></figure>
+<p>在黑板上写下50个数字：1至50.在接下来的49轮操作中，每次做如下动作：选取两个黑板上的数字a和b，擦去，在黑板上写|b – a|。请问最后一次动作之后剩下数字可能是什么？为什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">w=rep(0,7000)</div><div class="line">for(j in 1:7000)&#123;</div><div class="line">  t=c(1:50)</div><div class="line">  for(i in 1:49)&#123;</div><div class="line">    q=sample(t,2)</div><div class="line">    a=q[1];b=q[2];c=abs(a-b)</div><div class="line">    t=t[-which(t==a)]</div><div class="line">    len1=length(t)-50+i</div><div class="line">    if(len1&lt;0) t=c(t,rep(b,abs(len1)))</div><div class="line">    t=t[-which(t==b)]</div><div class="line">    len2=length(t)-49+i</div><div class="line">    if(len2&lt;0) t=c(t,rep(b,abs(len2)))</div><div class="line">    t[length(t)+1]=c</div><div class="line">    if(length(t)==1) w[j]=t</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">summary(w)</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/R初识 /">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/12/R初识 /" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:19:47+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>如何才能成功地处理、分析和理解数据：</p>
+<ol>
+<li>获取数据（从各种数据源将数据导入程序）；</li>
+<li>整理数据（编码缺失值、修复或删除错误数据、将变量转换成更方便的格式）；</li>
+<li>注释数据（以记住每段数据的含义）；  </li>
+<li>总结数据（通过描述性统计量了解数据的概况）；</li>
+<li>数据可视化（一图胜千言）；</li>
+<li>数据建模（解释数据间的关系，检验假设）；</li>
+<li>整理结果（创建具有出版水平的表格和图形）。</li>
+</ol>
+<h4 id="1-R简介"><a href="#1-R简介" class="headerlink" title="1. R简介"></a>1. R简介</h4><h5 id="1-1-什么是R？"><a href="#1-1-什么是R？" class="headerlink" title="1.1 什么是R？"></a>1.1 什么是R？</h5><p>要是一本书里没有图画和对话，那还有什么意思呢？</p>
+<p>​                                                                              ——爱丽丝《爱丽丝梦游仙境》</p>
+<p>R是一个非常灵活的平台，是专用于探索、展示和理解数据的语言，因此我引用了《爱丽丝梦游仙境》的句子来表示当今统计分析的潮流——一个探索、展示和理解的交互式过程。</p>
+<h5 id="1-2-R简史，前世今生"><a href="#1-2-R简史，前世今生" class="headerlink" title="1.2 R简史，前世今生"></a>1.2 R简史，前世今生</h5><p>R语言是从S统计绘图语言演变而来，可看作S的“方言”。</p>
+<p>S语言上世纪70年代诞生于贝尔实验室，是一种用来进行数据探索、统计分析和作图的解释型语言。</p>
+<p>1995年由新西兰Auckland大学，基于S语言的源代码，编写了一能执行S语言的软件，并将该软件的源代码全部公开，这就是R软件，其命令统称为R语言。</p>
+<h5 id="1-3-R的特点"><a href="#1-3-R的特点" class="headerlink" title="1.3 R的特点"></a>1.3 R的特点</h5><ul>
+<li><p>多领域的统计资源</p>
+<p>目前在R网站上约有5000多个程序包，涵盖了基础统计学、社会学、经济学、生物信息等诸多反面。</p>
+</li>
+<li><p>跨平台</p>
+<p>R可在多种操作系统下运行，如Windows、MacOS、Linux等。</p>
+</li>
+<li><p>命令行驱动</p>
+<p>R即时解释，输入命令，即可获得相应结果。</p>
+</li>
+</ul>
+<h5 id="1-4-为什么选择R？"><a href="#1-4-为什么选择R？" class="headerlink" title="1.4 为什么选择R？"></a>1.4 为什么选择R？</h5><ul>
+<li><p>丰富的资源</p>
+<p>涵盖了多种行业数据分析中几乎所有方法。</p>
+</li>
+<li><p>良好的扩展性</p>
+<p>十分方便的编写函数和程序包，跨平台，可以胜任复杂的数据分析、绘制精美的图形。</p>
+</li>
+<li><p>完备的帮助系统</p>
+<p>每个函数都有统一格式的帮助，运行实例。</p>
+</li>
+<li><p>GNU软件</p>
+<p>免费、软件本身及程序包的源代码公开</p>
+</li>
+</ul>
+<h5 id="1-5-程序包"><a href="#1-5-程序包" class="headerlink" title="1.5 程序包"></a>1.5 程序包</h5><p>R程序包是多个函数的集合，具有详细的说明和示例。</p>
+<p>Windows下的R包是经过编译的zip包。</p>
+<p>每个程序包包含函数、数据、帮助文件、描述文件等。</p>
+<p>R程序包是R功能扩展，特定的分析功能，需要用相应的程序包实现。</p>
+<p>例如：画图常用到ggplot2程序包，系统发育分析，常用到ape程序包。</p>
+<h4 id="2-R语言数据类型与数据结构"><a href="#2-R语言数据类型与数据结构" class="headerlink" title="2. R语言数据类型与数据结构"></a>2. R语言数据类型与数据结构</h4><h5 id="2-1-R语言数据类型"><a href="#2-1-R语言数据类型" class="headerlink" title="2.1 R语言数据类型"></a>2.1 R语言数据类型</h5><table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Numeric（数字）</td>
+<td>12.3，5，999</td>
+<td>v  &lt;- 23.5   print(class(v))    ：”numeric”</td>
+</tr>
+<tr>
+<td style="text-align:left">Integer（整型）</td>
+<td>2L，34L，0L</td>
+<td>v  &lt;- 2L   print(class(v))    ：”integer”</td>
+</tr>
+<tr>
+<td style="text-align:left">Complex（复合型）</td>
+<td>3  + 2i</td>
+<td>v  &lt;- 2+5i   print(class(v))    ：  “complex”</td>
+</tr>
+<tr>
+<td style="text-align:left">Character（字符）</td>
+<td>‘a’  , ‘“good”, “TRUE”, ‘23.4’</td>
+<td>v  &lt;- “TRUE”   print(class(v))  ：”character”</td>
+</tr>
+<tr>
+<td style="text-align:left">Raw（原型）</td>
+<td>“Hello”  被存储为  48  65 6c  6c 6f</td>
+<td>v  &lt;- charToRaw(“Hello”)   print(class(v  ：  “raw”</td>
+</tr>
+<tr>
+<td style="text-align:left">Logical（逻辑型）</td>
+<td>TRUE,  FALSE</td>
+<td>v  &lt;- TRUE   print(class(v))    ：  “logical”</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-2-R语言变量"><a href="#2-2-R语言变量" class="headerlink" title="2.2 R语言变量"></a>2.2 R语言变量</h5><p>变量为我们提供了我们的程序可以操作的命名存储。有效的变量名称由字母，数字和点或下划线字符组成。<br>变量名以字母或不以数字后跟的点开头。</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>合法性</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>var_name2.</td>
+<td>有效</td>
+<td>有字母、数字、点和下划线</td>
+</tr>
+<tr>
+<td>VAR_NAME%</td>
+<td>无效</td>
+<td>有字符<code>%</code></td>
+</tr>
+<tr>
+<td>2var_name</td>
+<td>无效</td>
+<td>数字开头</td>
+</tr>
+<tr>
+<td>.var_name,</td>
+<td>有效</td>
+<td>可以用<code>.</code>开头</td>
+</tr>
+<tr>
+<td>.2var_name</td>
+<td>无效</td>
+<td>用<code>.</code>开头，后面接数字</td>
+</tr>
+<tr>
+<td>_var_name</td>
+<td>无效</td>
+<td>以<code>_</code>开头</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-3-R语言特殊运算符"><a href="#2-3-R语言特殊运算符" class="headerlink" title="2.3 R语言特殊运算符"></a>2.3 R语言特殊运算符</h5><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>功能</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%%</td>
+<td>两个向量求余</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;-  c(8, 3, 4)   print(v%%t)  ：2.0  2.5  2.0</td>
+</tr>
+<tr>
+<td>％/％</td>
+<td>两个向量相除求商</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;-  c(8, 3, 4)   print(v%/%t)：0  1  1</td>
+</tr>
+<tr>
+<td>^</td>
+<td>将第二向量作为第一向量的指数</td>
+<td>v  &lt;- c( 2,5.5,6)   t  &lt;- c(8, 3, 4)   print(v^t)  ：256.000  166.375  1296.000</td>
+</tr>
+<tr>
+<td>:</td>
+<td>冒号运算符。  它为向量按顺序创建一系列数字。</td>
+<td>v  &lt;- 2:8   print(v)  :2  3  4 5 6 7 8</td>
+</tr>
+<tr>
+<td>%in%</td>
+<td>此运算符用于标识元素是否属于向量。</td>
+<td>TRUE  FALSE</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-4-R语言数据结构"><a href="#2-4-R语言数据结构" class="headerlink" title="2.4 R语言数据结构"></a>2.4 R语言数据结构</h5><ol>
+<li><p>向量</p>
+<p>向量是用于存储数值型、字符型或逻辑型数据的一维数组。执行组合功能的函数c()可用来创建向量。各类向量如下例所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a &lt;- c(1,2,3)</div><div class="line">b &lt;- c(&quot;one&quot;,&quot;two&quot;,&quot;three&quot;)</div><div class="line">c &lt;- c(TRUE,TRUE,FALSE)</div></pre></td></tr></table></figure>
+<p>通过在方括号中给定元素所处位置的数值，我们可以访问向量中的元素。例如，a[c(1,2)]用于访问向量a中的第1个和第2个元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a[c(1,2)]</div><div class="line">[1] 1 2</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>矩阵</p>
+<p>矩阵是一个二维数组，只是每个元素都拥有相同的模式（数值型、字符型或逻辑型）。可通过函数matrix创建矩阵。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%861.png" alt=""></p>
+</li>
+<li><p>数组</p>
+<p>数组（array）与矩阵类似，但是维度可以大于2。数组可通过array函数创建，形式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">myarray &lt;-array(vector, dimensions, dimnames)</div></pre></td></tr></table></figure>
+<p>其中vector包含了数组中的数据，dimensions是一个数值型向量，给出了各个维度下标的最大值，而dimnames是可选的、各维度名称标签的列表。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dim1 &lt;- c(&quot;A1&quot;,&quot;A2&quot;)</div><div class="line">dim2 &lt;- c(&quot;B1&quot;,&quot;B2&quot;,&quot;B3&quot;)</div><div class="line">dim3 &lt;- c(&quot;C1&quot;,&quot;C2&quot;,&quot;C3&quot;,&quot;C4&quot;)</div><div class="line">z &lt;- array(1:24, c(2,3,4),dimnames = list(dim1,dim2,dim3))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&gt; z</div><div class="line">, , C1</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1  1  3  5</div><div class="line">A2  2  4  6</div><div class="line"></div><div class="line">, , C2</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1  7  9 11</div><div class="line">A2  8 10 12</div><div class="line"></div><div class="line">, , C3</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1 13 15 17</div><div class="line">A2 14 16 18</div><div class="line"></div><div class="line">, , C4</div><div class="line"></div><div class="line">   B1 B2 B3</div><div class="line">A1 19 21 23</div><div class="line">A2 20 22 24</div></pre></td></tr></table></figure>
+<p>从数组中选取元素的方式与矩阵相同。上例中，元素z[1,2,3]为15。</p>
+</li>
+<li><p>数据框</p>
+<p>由于不同的列可以包含不同模式（数值型、字符型等）的数据，数据框的概念较矩阵来说更为一般。它与你通常在SAS、SPSS和Stata中看到的数据集类似。数据框将是你在R中最常处理的数据结构。</p>
+<p>数据框可通过函数data.frame()创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mydata &lt;-data.frame(col1, col2, col3,...)</div></pre></td></tr></table></figure>
+<p>其中的列向量col1, col2,col3,…可为任何类型（如字符型、数值型或逻辑型）。每一列的名称可由函数names指定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">patientID &lt;- c(1,2,3,4)</div><div class="line">age &lt;- c(25,34,28,52)</div><div class="line">diabetes &lt;- c(&quot;Type1&quot;,&quot;Type2&quot;,&quot;Type1&quot;,&quot;Type1&quot;)</div><div class="line">status &lt;- c(&quot;Poor&quot;,&quot;Improved&quot;,&quot;Excellent&quot;,&quot;Poor&quot;)</div><div class="line">patientdata &lt;- data.frame(patientID,age,diabetes,status)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt; patientdata</div><div class="line">  patientID age diabetes    status</div><div class="line">1         1  25    Type1      Poor</div><div class="line">2         2  34    Type2  Improved</div><div class="line">3         3  28    Type1 Excellent</div><div class="line">4         4  52    Type1      Poor</div></pre></td></tr></table></figure>
+<ul>
+<li><p>attach()、detach()和with()</p>
+<p>函数attach()可将数据框添加到R的搜索路径中。R在遇到一个变量名以后，将检查搜索路径中的数据框，以定位到这个变量。</p>
+<p>函数detach()将数据框从搜索路径中移除。值得注意的是，detach()并不会对数据框本身做任何处理。</p>
+<p>函数with(),大括号{}之间的语句都针对指定数据框执行</p>
+</li>
+<li><p>实例标识符</p>
+<p>在病例数据中，病人编号（patientID）用于区分数据集中不同的个体。实例标识符（case identifier）可通过数据框操作函数中的rowname选项指定。</p>
+<p>例如，语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">patientdata &lt;- data.frame(patientID, age, diabetes,status,row.names = patientID)</div></pre></td></tr></table></figure>
+<p>将patientID指定为R中标记各类打印输出和图形中实例名称所用的变量。</p>
+</li>
+</ul>
+</li>
+<li><p>因子 </p>
+<p>变量可归结为名义型、有序型或连续型变量。名义型变量是没有顺序之分的类别变量。糖尿病类型Diabetes（Type1、Type2）是名义型变量的一例。有序型变量表示一种顺序关系，而非数量关系。病情Status（poor, improved, excellent）是顺序型变量的一个上佳示例。续型变量可以呈现为某个范围内的任意值，并同时表示了顺序和数量。</p>
+<p>类别（名义型）变量和有序类别（有序型）变量在R中称为因子（factor）。</p>
+<p>函数factor()以一个整数向量的形式存储类别值，整数的取值范围是[1… k ]（其中k 是名义型变量中唯一值的个数），同时一个由字符串（原始值）组成的内部向量将映射到这些整数上。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diabetes &lt;- c(&quot;Type1&quot;,&quot;Type2&quot;,&quot;Type1&quot;,&quot;Type1&quot;)</div></pre></td></tr></table></figure>
+<p>语句diabetes &lt;-factor(diabetes)将此向量存储为(1, 2, 1, 1)，并在内部将其关联为1=Type1和2=Type2（具体赋值根据字母顺序而定）。针对向量diabetes进行的任何分析都会将其作为名义型变量对待。</p>
+</li>
+<li><p>列表</p>
+<p>列表（list）是R的数据类型中最为复杂的一种。一般来说，列表就是一些对象（或成分，component）的有序集合。列表允许你整合若干（可能无关的）对象到单个对象名下。例如，某个列表中可能是若干向量、矩阵、数据框，甚至其他列表的组合。可以使用函数list()创建列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mylist &lt;-list(object1, object2, ...)</div></pre></td></tr></table></figure>
+<p>其中的对象可以是目前为止讲到的任何结构。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">g &lt;- &quot;My First List&quot;</div><div class="line">h &lt;- c(25,26,18,39)</div><div class="line">j &lt;- matrix(1:10,nrow = 5)</div><div class="line">k &lt;-c(&quot;noe&quot;,&quot;two&quot;,&quot;three&quot;)</div><div class="line">mylist &lt;- list(title = g, ages = h, j, k)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&gt; mylist</div><div class="line">$title</div><div class="line">[1] &quot;My First List&quot;</div><div class="line"></div><div class="line">$ages</div><div class="line">[1] 25 26 18 39</div><div class="line"></div><div class="line">[[3]]</div><div class="line">     [,1] [,2]</div><div class="line">[1,]    1    6</div><div class="line">[2,]    2    7</div><div class="line">[3,]    3    8</div><div class="line">[4,]    4    9</div><div class="line">[5,]    5   10</div><div class="line"></div><div class="line">[[4]]</div><div class="line">[1] &quot;noe&quot;   &quot;two&quot;   &quot;three&quot;</div></pre></td></tr></table></figure>
+<h5 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h5><ol>
+<li>对象名称中的句点（.）没有特殊意义。但美元符号<code>$</code>却有着和其他语言中的句点类似的含义，即指定一个对象中的某些部分。例如，<code>A$x</code>是指数据框A中的变量x。</li>
+<li>R不提供多行注释或块注释功能。</li>
+<li>将一个值赋给某个向量、矩阵、数组或列表中一个不存在的元素时，R将自动扩展这个数据结构以容纳新值。</li>
+<li>R中没有标量。标量以单元素向量的形式出现。</li>
+<li><p>R中的下标不从0开始，而从1开始。</p>
+</li>
+<li><p>变量无法被声明。它们在首次被赋值时生成。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="3-数据的输入"><a href="#3-数据的输入" class="headerlink" title="3.  数据的输入"></a>3.  数据的输入</h4><p>R可从键盘、文本文件、Microsoft Excel和Access、流行的统计软件、特殊格式的文件，以及多种关系型数据库中导入数据。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%862.png" alt=""></p>
+<h4 id="4-初阶绘图"><a href="#4-初阶绘图" class="headerlink" title="4. 初阶绘图"></a>4. 初阶绘图</h4><p>通过执行如plot()、hist()（绘制直方图）或barplot()（创建条形图），可以很方便的绘制图形。</p>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">H&lt;- c(7,12,28,3,41)</div><div class="line">barplot(H)</div></pre></td></tr></table></figure>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%863.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">n=50000;</div><div class="line">r=0.7;r_e=(1-r*r)^.5;</div><div class="line">X=rnorm(n);</div><div class="line">Y=Xr+r_ernorm(n);</div><div class="line">Y=ifelse(X&gt;0,Y,-Y);</div><div class="line">plot(X,Y,col=&quot;pink&quot;)</div></pre></td></tr></table></figure>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%865.png" alt=""></p>
+<h4 id="5-案例展示"><a href="#5-案例展示" class="headerlink" title="5. 案例展示"></a>5. 案例展示</h4><p>《红楼梦》文本分析以及关系网络的挖掘。</p>
+<p>在这里主要进行和挖掘了如下内容：</p>
+<ol>
+<li>《红楼梦》数据的准备、预处理、分词等</li>
+<li>《红楼梦》各个章节的字数、词数、段落等相关方面的关系</li>
+<li>《红楼梦》整体词频和词云的展示</li>
+<li>《红楼梦》各个章节的聚类分析并可视化，主要进行了根据IF-IDF的系统聚类和根据词频的LDA主题模型聚类</li>
+<li>《红楼梦》中关系网络的探索，主要探索了各个章节的关系图和人物关系网路图</li>
+</ol>
+<ul>
+<li>《红楼梦》数据的准备、预处理、分词等</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">##   [1] &quot;金荣&quot;       &quot;人多势众&quot;   &quot;贾瑞&quot;       &quot;勒令&quot;       &quot;秦钟&quot;      </div><div class="line">##   [6] &quot;宝玉&quot;       &quot;吵闹&quot;       &quot;金荣&quot;       &quot;回到&quot;       &quot;家中&quot;      </div><div class="line">##  [11] &quot;越想&quot;       &quot;越气&quot;       &quot;秦钟&quot;       &quot;贾蓉&quot;       &quot;小舅子&quot;    </div><div class="line">##  [16] &quot;贾家&quot;       &quot;子孙&quot;       &quot;附学&quot;       &quot;读书&quot;       &quot;因仗&quot;      </div><div class="line">##  [21] &quot;宝玉&quot;       &quot;目中无人&quot;   &quot;该行&quot;       &quot;正经事&quot;     &quot;素日&quot;      </div><div class="line">##  [26] &quot;宝玉&quot;       &quot;鬼鬼祟祟&quot;   &quot;瞎子&quot;       &quot;看不见&quot;     &quot;今日&quot;      </div><div class="line">##  [31] &quot;勾搭&quot;       &quot;眼睛&quot;       &quot;出事&quot;       &quot;母亲&quot;       &quot;胡氏&quot;      </div><div class="line">##  [36] &quot;听见&quot;       &quot;咕咕&quot;       &quot;嘟嘟&quot;       &quot;问道&quot;       &quot;闲气&quot;      </div><div class="line">##  [41] &quot;好容易&quot;     &quot;我望&quot;       &quot;姑妈&quot;       &quot;姑妈&quot;       &quot;千方百计&quot;  </div><div class="line">##  [46] &quot;西府里&quot;     &quot;琏二奶奶&quot;   &quot;跟前&quot;       &quot;念书&quot;       &quot;地方&quot;      </div><div class="line">##  [51] &quot;家里&quot;       &quot;力量&quot;       &quot;学里&quot;       &quot;现成&quot;       &quot;现成&quot;      </div><div class="line">##  [56] &quot;二年&quot;       &quot;念书&quot;       &quot;家里&quot;       &quot;嚼用&quot;       &quot;穿件&quot;      </div><div class="line">##  [61] &quot;鲜明&quot;       &quot;衣服&quot;       &quot;念书&quot;       &quot;认得&quot;       &quot;薛大爷&quot;    </div><div class="line">##  [66] &quot;薛大爷&quot;     &quot;一年&quot;       &quot;二年&quot;       &quot;七八十两&quot;   &quot;银子&quot;      </div><div class="line">##  [71] &quot;学房&quot;       &quot;再要&quot;       &quot;地方&quot;       &quot;告诉&quot;       &quot;比登&quot;      </div><div class="line">##  [76] &quot;难呢&quot;       &quot;一会&quot;       &quot;觉去&quot;       &quot;多着呢&quot;     &quot;金荣&quot;</div></pre></td></tr></table></figure>
+<ul>
+<li><p>《红楼梦》各个章节的字数、词数、段落等相关方面的关系</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%867.png" alt=""></p>
+</li>
+<li><p>段落数、字数、词数三维散点图</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%868.png" alt=""></p>
+</li>
+<li><p>段落数、字数、词数矩阵散点图</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%869.png" alt=""></p>
+</li>
+<li><p>《红楼梦》整体词频展示</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8610.png" alt=""></p>
+</li>
+<li><p>《红楼梦》整体词云的展示</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8611.png" alt=""></p>
+</li>
+<li><p>《红楼梦》中关系网络的探索</p>
+</li>
+</ul>
+<p><img src="http://on470ybud.bkt.clouddn.com/R%E5%88%9D%E8%AF%8612.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/HLS协议入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/12/HLS协议入门/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T23:19:47+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-什么是HLS协议？"><a href="#1-什么是HLS协议？" class="headerlink" title="1. 什么是HLS协议？"></a>1. 什么是HLS协议？</h4><p>HLS 全称是 HTTP Live Streaming, 是一个由 Apple 公司实现的基于 HTTP 的媒体流传输协议。他跟DASH 协议的原理非常类似。通过将整条流切割成一个小的可以通过 HTTP 下载的媒体文件, 然后提供一个配套的媒体列表文件, 提供给客户端, 让客户端顺序地拉取这些媒体文件播放, 来实现看上去是在播放一条流的效果。简单讲就是把整个ts流分成一个个小的、基于 HTTP 的文件来下载，每次只下载一些。它的传输内容包括两部份, 一是 M3U8 描述文件, 二是 TS 媒体文件。</p>
+<p>由于传输层协议只需要标准的 HTTP 协议, HLS 可以方便的透过防火墙或者代理服务器, 而且可以很方便的利用 CDN 进行分发加速, 并且客户端实现起来也很方便。</p>
+<p>HLS 目前广泛地应用于点播和直播领域.</p>
+<h4 id="2-HLS框架介绍"><a href="#2-HLS框架介绍" class="headerlink" title="2. HLS框架介绍"></a>2. HLS框架介绍</h4><p><img src="http://on470ybud.bkt.clouddn.com/HLS1.png" alt=""></p>
+<h5 id="2-1-整体流程"><a href="#2-1-整体流程" class="headerlink" title="2.1 整体流程"></a>2.1 整体流程</h5><ul>
+<li><p>首先将要直播的视频送到编码器中，编码器分别对视频和音频进行编码，然后输出到一个MPEG-2格式的ts传输流中。</p>
+</li>
+<li><p>分段器将ts流分段，产生一系列等间隔的媒体片段，这些媒体片段一般很小并且保存成后缀为.ts的文件，同时生成一个指向这些媒体文件的索引文件（<br>.M3U8文件）。</p>
+</li>
+<li><p>客户端读取索引文件，然后按顺序请求下载索引文件中列出的媒体文件。下载后是一个ts文件。需要进行解压获得对应的媒体数据并解码后进行播放。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/HLS2.png" alt=""></p>
+</li>
+</ul>
+<h5 id="2-2-Server"><a href="#2-2-Server" class="headerlink" title="2.2 Server"></a>2.2 Server</h5><p>服务器组件负责获取的媒体输入流 , 然后Media编码后 MPEG-4（H.264 video 和 AAC audio）格式然后封装成MPEG-2 (MPEG-2 transport stream)的传输流中。</p>
+<p>传输流会经过stream segmenter, 这里的工作是MPEG-2传输流会被分散为小片段然后保存为一个或多个系列的 .ts 格式的媒体文件。这个过程需要借助编码工具来完成，比如 Apple stream segmenter。</p>
+<p> 服务端可以采用硬件编码和软件编码两种形式，其功能都是按照上文描述的规则对现有的媒体文件进行切片并使用索引文件进行管理。</p>
+<ul>
+<li><p>Media encoder (媒体编码) :</p>
+<p>媒体编码器获取到音视频设备的实时信号，将其编码后压缩用于传输。而编码格式必须配置为客户端所支持的格式，比如H.264视频和HE-AAC音频。当前，支持用于视频的MPEG-2传输流和纯音频的MPEG 基本流。编器通过本地网络将MPEG-2传输流分发出去，送到流切片器(Streamsegmenter)那里。标准传输流和压缩传输流无法混合使用。</p>
+</li>
+<li><p>Stream segmenter (流切片器)</p>
+<p>流切片器（通常是一个软件,一个SDK）会通过本地网络从上面的媒体编码器中读取数据，然后将着这些数据一组相等时间间隔的小媒体文件。虽然每一个片段都是一个单独的文件，但是他们的来源是一个连续的流，切完照样可以无缝重构回去。切片器在切片同时会创建一个索引文件(Index<br>file)，索引文件会包含这些切片文件的引用。每当一个切片文件生成后，索引文件都会进行更新。索引用于追踪切片文件的有效性和定位切片文件的位置。切片器同时也可以对你的媒体片段进行加密并且创建一个密钥文件作为整个过程的一部分。</p>
+</li>
+<li><p>文件切片器</p>
+<p>如果已经有编码后的文件（而不是编码流），可以使用文件切片器，通过它对编码后的媒体文件进行MPEG-2流的封装并且将它们分割为等长度的小片段。切片器允许使用已经存在的音视频库用于HLS 服务。它和流切片器的功能相似，但是处理的源从流替换流为了文件。</p>
+</li>
+<li><p>媒体片段文件(上面切出来的小片段)</p>
+<p>媒体片段是由切片器生成的，基于编码后的媒体源，并且是由一系列的 .ts(如果是纯音频则不是.ts格式)格式的文件组成，其中包含了你想通过MPEG-2传送流携带的H.264视频 和 AAC/MP3/AC-3 音频。对于纯音频的播，切片器可以生产MPEG 基础音频流，其中包含了ADTS头的AAC、MP3、或者AC3等音频。</p>
+</li>
+<li><p>索引文件（.M3U8文件）</p>
+<p>索引文件由切片器附带生成，保存为 .m3u8格式。</p>
+<p>索引文件是一个文本文件，简单来说就是一个记录了ts文件地址的播放列表，它包含了各自独立的行，行可以是一个URI，空行，或者以字符#开头。空行将会被忽略。空格只能作为一行中不同元素间的分隔。</p>
+<p>一个URI 表示一个媒体文件或是变种播放列表文件，URI可以是相对的，一个相对的URI必须被包含该URI的播放列表文件中的URI所解析。</p>
+<p>以注释字符#开头的行可能是注释或者标签，标签以#EXT开头，其他所有行都应该被忽略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#EXTM3U </div><div class="line">#EXT-X-VERSION:3 </div><div class="line">#EXT-X-TARGETDURATION:8 </div><div class="line">#EXT-X-MEDIA-SEQUENCE:2680 </div><div class="line">#EXTINF:7.975, </div><div class="line">https://priv.example.com/fileSequence2680.ts </div><div class="line">#EXTINF:7.941, </div><div class="line">https://priv.example.com/fileSequence2681.ts </div><div class="line">#EXTINF:7.975, </div><div class="line">https://priv.example.com/fileSequence2682.ts</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">#EXTM3U：每个M3U8文件第一行必须是这个tag。</div><div class="line">#EXT-X-VERSION:  指定版本</div><div class="line">#EXT-X-TARGETDURATION：指定最大的媒体段时间长度（秒）</div><div class="line">#EXT-X-MEDIA-SEQUENCE：指明了出现在播放列表文件中的第一个URI的序列号</div><div class="line">#EXTINF：描述单个媒体文件的长度。后面为媒体文件，如./0.ts </div><div class="line">#EXT-X-KEY：METHOD=&lt;method&gt; [,URI = “&lt;uri&gt;”] [,IV = &lt;iv&gt;]    加密方法</div><div class="line">#EXT-X-ALLOW-CACHE:&lt;YES|NO&gt;   是否能缓存下载的媒体文件用来重播</div><div class="line">EXT-X-ENDLIST 标签表示没有更多媒体文件将会加入到播放列表中</div></pre></td></tr></table></figure>
+</li>
+<li><p>嵌套索引文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#EXTM3U </div><div class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=1280000 http://example.com/low.m3u8 </div><div class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2560000 http://example.com/mid.m3u8 </div><div class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=7680000 http://example.com/hi.m3u8 </div><div class="line">#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=65000,CODECS=&quot;mp4a.40.5&quot; http://example.com/audio-only.m3u8</div></pre></td></tr></table></figure>
+<p>HLS 通过URI指向的一个Playlist来表示一个媒体流。</p>
+<p>一个 Playlist可以是一个MediaPlaylist 或者 MasterPlaylist, 使用 UTF-8编码的文本文件,包含一些URI跟描述性的tags。</p>
+<p>一个 MediaPlaylist 包含一个 MediaSegments 列表,当顺序播放时,能播放整个完整的流。</p>
+<p>要想播放这个 Playlist,客户端需要首先下载他,然后播放里面的每一个MediaSegment。</p>
+<p>更加复杂的情况是,Playlist 是一个 MasterPlaylist, 包含一个 VariantStream 集合, 通常每个VariantStream 里面是同一个流的多个不同版本(如:分辨率,码率不同)。</p>
+<p><img src="http://on470ybud.bkt.clouddn.com/HLS3.png" alt=""></p>
+</li>
+</ul>
+<h5 id="2-3-Distribution"><a href="#2-3-Distribution" class="headerlink" title="2.3 Distribution"></a>2.3 Distribution</h5><p>媒体流索引文件与对应的媒体文件存放在分发模块Distribution 中，分发模块Distribution是一个标准的Web 服务器，通过标准的HTTP访问，客户端Client可以获取到媒体流的索引文件，并通过索引文件逐个获取媒体流的分块ts文件。<br>相对于其他移动平台上使用的基于UDP协议的RTSP媒体数据流播放方案，分发模块Distribution仅仅使用HTTP连接传输所有的数据，使其多媒体数据流能够最广泛的穿越各种边缘网络的网关、路由器、网络代理设备。此外，分发模块Distribution可以和各种数字内容分发的前端机器合作，提供缓存、媒体数据的分布式存储等。</p>
+<h5 id="2-4-Client"><a href="#2-4-Client" class="headerlink" title="2.4 Client"></a>2.4 Client</h5><p>客户端开始时会去抓取索引文件(.m3u8/.m3u)，其中用URL来标记不同的流。索引文件可以指定可用媒体文件的位置，解密的密钥，以及任何可以切换的流。对于选中的流，客户端会有序的下载每一个可获得的文件。每一个文件都包含流中的连环碎片。一旦下载到足够量的数据，客户端会开始向用户展示重新装配好的媒体资源。客户端负责抓取任何解密密钥，认证或者展示一个用于认证的界面，之后再解密需要的文件。这个过程会一直持续知道出现<br>结束标记 #EXT-X-ENDLIST。如果结束标记不出现，该索引就是用于持续广播的。客户端会定期的加载一些新的索引文件。客户端会从新更新的索引文件中去查找加密密钥并且将关联的URL加入到请求队列中去。</p>
+<h5 id="2-5-HLS播发流程"><a href="#2-5-HLS播发流程" class="headerlink" title="2.5 HLS播发流程"></a>2.5 HLS播发流程</h5><p><img src="http://on470ybud.bkt.clouddn.com/HLS4.png" alt=""></p>
+<h4 id="3-内容加密"><a href="#3-内容加密" class="headerlink" title="3 内容加密"></a>3 内容加密</h4><p>如果内容需要加密，你可以在索引文件中找到密钥的相关信息。如果索引文件中包含了一个密钥文件的信息，那接下来的媒体文件就必须使用密钥解密后才能解密打开了。</p>
+<p>加密的配置模式通常包含三种： </p>
+<ol>
+<li>模式一：允许你在磁盘上制定一个密钥文件路径，切片器会在索引文件中插入存在的密钥文件的URL。所有的媒体文件都使用该密钥进行加密。</li>
+<li>模式二：切片器会生成一个随机密钥文件，将它保存在指定的路径，并在索引文件中引用它。所有的媒体文件都会使用这个随机密钥进行加密。</li>
+<li>模式三：每n个片段生成一个随机密钥文件，并保存到指定的位置，在索引中引用它。这个模式的密钥处于轮流加密状态。每一组n个片段文件会使用不同的密钥加密。</li>
+</ol>
+<h4 id="4-会话模式"><a href="#4-会话模式" class="headerlink" title="4 会话模式"></a>4 会话模式</h4><h5 id="4-1-点播"><a href="#4-1-点播" class="headerlink" title="4.1 点播"></a>4.1 点播</h5><p>点播VOD的特点就是可以获取到一个静态的索引文件，其中包含一套完整的资源文件地址。这种模式允许客户端访问全部节目。VOD点播拥有先进的下载技术，包括加密认证技术和动态切换文件传输速率的功能（通常用于不同分辨率视频之间的切换）。</p>
+<h5 id="4-2-直播"><a href="#4-2-直播" class="headerlink" title="4.2 直播"></a>4.2 直播</h5><p>Live会话就是实时事件的录制展示。它的索引文件一直处于动态变化的，你需要不断的更新索引文件playlist然后移除旧的索引文件。这种类型通过向索引文件添加媒体地址可以很容易的转化为VOD类型。转化时如果你的索引文件中包含EXT-X-PLAYLIST-TYPE标签，你需要将值从EVENT改为 VOD。</p>
+<p>具体步骤：</p>
+<ol>
+<li>移除一个文件播放列表中靠前的（认为已播放的）文件；</li>
+<li>不断更新EXT-X-MEDIA-SEQUENCE标签，以步长为1进行递增；</li>
+</ol>
+<p>延时问题：HLS的分段策略，基本上推荐是10秒一个分片，通常来说，为了缓存等方面的原因，在索引文件中会保留最新的三个分片地址，以类似“滑动窗口”的形式，进行更新。所以延迟至少就是30秒。</p>
+<h4 id="5-HLS优缺点"><a href="#5-HLS优缺点" class="headerlink" title="5 HLS优缺点"></a>5 HLS优缺点</h4><h5 id="5-1-优势"><a href="#5-1-优势" class="headerlink" title="5.1 优势"></a>5.1 优势</h5><ol>
+<li>客户端支持简单,只需要支持HTTP请求即可,HTTP 协议无状态,只需要按顺序下载媒体片段即可；</li>
+<li>使用 HTTP 协议网络兼容性好,HTTP 数据包也可以方便地通过防火墙或者代理服务器,CDN 支持良好；</li>
+<li>Apple的全系列产品支持,由于HLS是苹果提出的,所以在Apple的全系列产品包括iphone,ipad,safari 都不需要安装任何插件就可以原生支持播放 HLS,现在,Android 也加入了对 HLS的支持；</li>
+<li>自带多码率自适应,Apple 在提出 HLS 时,就已经考虑了码流自适应的问题。</li>
+</ol>
+<h5 id="5-2-劣势"><a href="#5-2-劣势" class="headerlink" title="5.2 劣势"></a>5.2 劣势</h5><ol>
+<li>相比 RTMP 这类长连接协议,延时较高,难以用到互动直播场景；</li>
+<li>对于点播服务来说,由于TS切片通常较小,海量碎片在文件分发,一致性缓存,存储等方面都有较大挑战。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/10/TCP-IP总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/10/TCP-IP总结/" itemprop="url">TCP/IP总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T14:19:13+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>计算机网络根据规模可以分为WAN(Wide Area Network,广域网)和LAN(Local Area Network,局域网)。</p>
+<p>将有业务往来的计算机连在一起便组成了私有网络,将多个私有网络连接一起就成了为公众使用的互联网。</p>
+<p>TCP/IP是通信协议的统称。</p>
+<h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>协议就是计算机与计算机之间通过网络实现通信事先达成的一种“约定”。这种“约定”使那些由不同厂商的设备、不同的CPU以及不同的操作系统组成的计算机之间，只要遵循相同的协议就能够实现通信。计算机与网络设备要相互通信，双方就必须基于相同的方法。比如，如何探测到通信目标、由哪一边先发起通信、使用哪种语言进行通信、怎样结束通信等规则都需要事先确定。不同的硬件、操作系统之间的通信，所有的这一切都需要一种规则。而我们就把这种规则称为协议（protocol）。</p>
+<p><strong>分组交换</strong> 是将大数据分割为一个个叫做包（Packet）的较小单位进行传输的方法。这里所说的包，就如同我们平常在邮局里见到的邮包。分组交换就是将大数据分装为一个个这样的邮包交给对方。</p>
+<h3 id="什么是-TCP-IP"><a href="#什么是-TCP-IP" class="headerlink" title="什么是 TCP/IP?"></a>什么是 TCP/IP?</h3><p>TCP/IP 是一类协议系统，它是用于网络通信的一套协议集合。</p>
+<p>传统上来说 TCP/IP 被认为是一个四层协议。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/22/SQLite-数据库存储/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zeng's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/22/SQLite-数据库存储/" itemprop="url">SQLite 数据库存储</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T16:19:31+08:00">
+                2017-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>SQLite是一款轻量级的关系型数据库，运算速度快，占用资源少，通常只需几百KB的内存就够了。SQLite不仅支持标准的SQL语法，还遵循数据库的ACID事务。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/08/12/hello-world/#more" rel="contents">
+            <a class="btn" href="/2017/03/22/SQLite-数据库存储/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -511,158 +1376,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/20/Github-Pages-Hexo搭建博客/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zeng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/logo.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zeng's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/20/Github-Pages-Hexo搭建博客/" itemprop="url">Github-Pages-Hexo搭建博客</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-20T20:22:08+08:00">
-                2017-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">Hexo</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="写在前面的话"><a href="#写在前面的话" class="headerlink" title="写在前面的话"></a>写在前面的话</h3><p>阮一峰说过，喜欢写Blog的人，会经历三个阶段。</p>
-<p>（1）第一阶段，刚接触Blog，觉得很新鲜，试着选择一个免费空间来写。</p>
-<p>（2）第二阶段，发现免费空间限制太多，就自己购买域名和空间，搭建独立博客。</p>
-<p>（3）第三阶段，觉得独立博客的管理太麻烦，最好在保留控制权的前提下，让别人来管，自己只负责写文章。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/20/Github-Pages-Hexo搭建博客/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -706,7 +1426,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -717,7 +1437,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -728,7 +1448,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
