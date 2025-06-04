@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书视频</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; }
+        .player { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <iframe id="bili-player" class="player" allowfullscreen></iframe>
+    
+    <script>
+        // 从URL获取参数，例如 player.html?vid=BV1xx1234567
+        const urlParams = new URLSearchParams(window.location.search);
+        const bvid = urlParams.get('vid'); // 参数名可自定义（如vid、bvid等）
+        
+        // 动态设置B站播放器
+        if (bvid) {
+            document.getElementById('bili-player').src = 
+                `https://player.bilibili.com/player.html?bvid=${bvid}&danmaku=0`;
+        } else {
+            document.body.innerHTML = "<h1>视频参数错误</h1>";
+        }
+    </script>
+</body>
+</html>
